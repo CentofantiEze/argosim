@@ -1,0 +1,8 @@
+name: argosim
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy>=1.26
+  - matplotlib>=3.8
+  - pillow>=10.1
