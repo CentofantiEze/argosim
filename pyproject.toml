@@ -1,0 +1,17 @@
+[project]
+name = "argosim"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    {"name" = "Ezequiel Centofanti", "email" = "ezequiel.centofanti@cea.fr" },
+]
+maintainers = [
+    {"name" = "Ezequiel Centofanti", "email" = "ezequiel.centofanti@cea.fr" },
+]
+description = 'Package for radio image reconstruction for the ARGOS radio telescope.'
+dependencies = [
+    "numpy>=1.26",
+    "matplotlib>=3.8",
+    "pillow>=10.1",
+]
+version = "0.0.1"
