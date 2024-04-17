@@ -6,3 +6,4 @@ dependencies:
   - numpy>=1.26
   - matplotlib>=3.8
   - pillow>=10.1
+  - notebook>=7.0.6
