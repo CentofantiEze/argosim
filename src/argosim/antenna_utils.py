@@ -41,10 +41,10 @@ def random_antenna_pos(E_lim = 1000, N_lim =1000, U_lim=0):
     # Return (x,y) random location for single dish
     return rnd.random_sample(3)*np.array([E_lim,N_lim,U_lim]) - np.array([E_lim, N_lim, 0.])/2
 
-def radial_antenna_arr(n_antenna= 3, r=300):
-    """Radial antenna arr.
+def circular_antenna_arr(n_antenna= 3, r=300):
+    """Circular antenna arr.
 
-    Function to generate a radial antenna array. Antennas lie in a circumference 
+    Function to generate a circular antenna array. Antennas lie in a circumference 
     of radius 'r' from the center [0,0] and are equally spaced.
 
     Parameters
