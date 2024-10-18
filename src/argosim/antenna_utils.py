@@ -13,27 +13,33 @@ import matplotlib
 import numpy.random as rnd
 from PIL import Image
 
+########################################
+#      Generate antenna positions      #
+########################################
 
-def random_antenna_pos(x_lims = 1000, y_lims =1000):
+def random_antenna_pos(E_lim = 1000, N_lim =1000, U_lim=0):
     """Random antenna pos.
     
-    Function to generate a random antenna position in the ground.
-    Antenna lies in the range [-x_lims/2, x_lims/2]x[-y_lims/2, y_lims/2].
+    Function to generate a random antenna location in ENU coordinates.
+    Antenna lies in the range:
+        [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].
     
     Parameters
     ----------
-    x_lims : int
-        The x-axis span width of the antenna position.
-    y_lims : int
-        The y-axis span width of the antenna position.
+    E_lim : int
+        The east coordinate span width of the antenna position in meters.
+    N_lim : int
+        The north coordinate span width of the antenna position in meters.
+    U_lim : int
+        The up coordinate span width of the antenna position in meters.
         
     Returns
     -------
     antenna_pos : np.ndarray
-        The antenna position.
+        The antenna position in ENU coordinates.
     """
     # Return (x,y) random location for single dish
-    return rnd.random_sample(2)*np.array([x_lims,y_lims]) - np.array([x_lims, y_lims])/2
+    return rnd.random_sample(3)*np.array([E_lim,N_lim,U_lim]) - np.array([E_lim, N_lim, 0.])/2
 
 def radial_antenna_arr(n_antenna= 3, r=300):
     """Radial antenna arr.
@@ -46,15 +52,15 @@ def radial_antenna_arr(n_antenna= 3, r=300):
     n_antenna : int
         The number of antennas in the array. 
     r : int
-        The radius of the antenna array.
+        The radius of the antenna array in meters.
 
     Returns
     -------
     antenna_arr : np.ndarray
-        The antenna array positions.
+        The antenna array positions in ENU coordinates.
     """
     # Return list of 'n' antenna locations (x_i, y_i) equally spaced over a 'r' radius circumference.
-    return np.array([[np.cos(angle)*r, np.sin(angle)*r] for angle in [2*np.pi/n_antenna*i for i in range(n_antenna)]])
+    return np.array([[np.cos(angle)*r, np.sin(angle)*r, 0.] for angle in [2*np.pi/n_antenna*i for i in range(n_antenna)]])
 
 def y_antenna_arr(n_antenna=5, r=500, alpha=0):
     """Y antenna arr.
@@ -67,41 +73,48 @@ def y_antenna_arr(n_antenna=5, r=500, alpha=0):
     n_antenna : int
         The number of antennas per arm.
     r : int
-        The radius of the antenna array.
+        The radius of the antenna array in meters.
     alpha : int
         The angle of the first arm.
 
     Returns
     -------
     antenna_arr : np.ndarray
-        The antenna array positions.
+        The antenna array positions in ENU coordinates.
     """
     # Return list of 'n' antenna locations (x_i, y_i) equispaced on three (120 deg) radial arms.
     step = r/n_antenna
-    return np.array([ [np.array([(i+1)*step*np.cos(angle/180*np.pi), (i+1)*step*np.sin(angle/180*np.pi)]) for i in range(n_antenna)] for angle in [alpha, alpha+120, alpha+240] ]).reshape((3*n_antenna,2))
+    return np.array([ [np.array([(i+1)*step*np.cos(angle/180*np.pi), (i+1)*step*np.sin(angle/180*np.pi), 0.]) for i in range(n_antenna)] for angle in [alpha, alpha+120, alpha+240] ]).reshape((3*n_antenna,3))
 
-def random_antenna_arr(n_antenna=3, x_lims=1000, y_lims=1000):
+def random_antenna_arr(n_antenna=3, E_lim=1000, N_lim=1000, U_lim=0):
     """Random antenna arr.
 
     Function to generate a random antenna array. Antennas lie randomly distributed
-    in the range [-x_lims/2, x_lims/2]x[-y_lims/2, y_lims/2].
+    in the range:
+        [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].
 
     Parameters
     ----------
     n_antenna : int
         The number of antennas in the array.
-    x_lims : int
-        The x-axis dimension of the antenna array.
-    y_lims : int
-        The y-axis dimension of the antenna array.
+    E_lim : int
+        The east coordinate span width of the antenna positions in meters.
+    N_lim : int
+        The north coordinate span width of the antenna positions in meters.
+    U_lim : int
+        The up coordinate span width of the antenna positions in meters.
 
     Returns
     -------
     antenna_arr : np.ndarray
-        The antenna array positions.
+        The antenna array positions in ENU coordinates.
     """
     # Return list of 'n' antenna locations (x_i, y_i) randomly distributed.
-    return np.array([random_antenna_pos(x_lims, y_lims) for i in range(n_antenna)])
+    return np.array([random_antenna_pos(E_lim, N_lim, U_lim) for i in range(n_antenna)])
+
+########################################
+#  Compute baselines and uv sampling   #
+########################################
 
 def get_baselines(array):
     """Get baselines.
@@ -122,199 +135,121 @@ def get_baselines(array):
     # Remove the i=j baselines: np.delete(array, list, axis=0) -> delete the rows listed on 'list' from array 'array'. 
     return np.delete(np.array([antenna_i-antenna_j for antenna_i in array for antenna_j in array]), [(len(array)+1)*n for n in range(len(array))], 0)
 
-def uv_time_int(baselines, array_latitud=35/180*np.pi,source_declination=35/180*np.pi, track_time=8, delta_t=5/60, t_0=-2):
-    """Uv time int.
+def ENU_to_XYZ(b_ENU, lat = 35./180*np.pi):
+    """ENU to XYZ.
 
-    Function to perform aperture synthesis with an antenna array 
-    for a given observation time.
+    Function to convert the baselines from East-North-Up (ENU) to XYZ coordinates.
 
     Parameters
     ----------
-    baselines : np.ndarray
-        The antenna array baselines.
-    array_latitud : float
+    b_ENU : np.ndarray
+        The baselines in ENU coordinates.
+    lat : float
         The latitude of the antenna array in radians.
-    source_declination : float
+
+    Returns
+    -------
+    X : np.ndarray
+        The X coordinate of the baselines in XYZ coordinates.
+    Y : np.ndarray
+        The Y coordinate of the baselines in XYZ coordinates.
+    Z : np.ndarray
+        The Z coordinate of the baselines in XYZ coordinates.
+    """
+    # Compute baseline length, Azimuth and Elevation angles
+    D = np.sqrt(np.sum(b_ENU**2, axis=1))
+    A = np.arctan2(b_ENU[:,0], b_ENU[:,1])
+    E = np.arcsin(b_ENU[:,2]/D)
+    # Compute the baseline in XYZ coordinates
+    X = D*(np.cos(lat)*np.sin(E)-np.sin(lat)*np.cos(E)*np.cos(A))
+    Y = D*np.cos(E)*np.sin(A)
+    Z = D*(np.sin(lat)*np.sin(E)+np.cos(lat)*np.cos(E)*np.cos(A))
+
+    return X,Y,Z
+
+def XYZ_to_uvw(X, Y, Z, dec=30./180*np.pi , ha=0., f=1420e6):
+    """XYZ to uvw.
+
+    Get the uvw sampling points from the XYZ coordinates given a 
+        source declination, hour angle and frequency.
+
+    Parameters
+    ----------
+    X : np.ndarray
+        The X coordinate of the baselines in XYZ coordinates.
+    Y : np.ndarray
+        The Y coordinate of the baselines in XYZ coordinates.
+    Z : np.ndarray
+        The Z coordinate of the baselines in XYZ coordinates.
+    dec : float
+        The declination of the source in radians.
+    ha : float
+        The hour angle of the source in radians.
+    f : float
+        The frequency of the observation in Hz.
+
+    Returns
+    -------
+    u : np.ndarray
+        The u coordinate of the baselines in uvw coordinates.
+    v : np.ndarray
+        The v coordinate of the baselines in uvw coordinates.
+    w : np.ndarray
+        The w coordinate of the baselines in uvw coordinates.
+    """
+    c = 299792458
+    lam_inv = f/c
+    u = lam_inv*(np.sin(ha)*X+np.cos(ha)*Y)
+    v = lam_inv*(-np.sin(dec)*np.cos(ha)*X+np.sin(dec)*np.sin(ha)*Y+np.cos(dec)*Z)
+    w = lam_inv*(np.cos(dec)*np.cos(ha)*X-np.cos(dec)*np.sin(ha)*Y+np.sin(dec)*Z)
+    return u,v,w
+    
+
+def uv_track_multiband(b_ENU, lat = 35./180*np.pi, dec=35./180*np.pi, track_time=0., t_0=0., n_times = 1 , f=1420e6, df=0., n_freqs=1):
+    """Uv track multiband.
+
+    Function to compute the uv sampling baselines for a given observation time and frequency range.
+
+    Parameters
+    ----------
+    b_ENU : np.ndarray
+        The baselines in ENU coordinates.
+    lat : float
+        The latitude of the antenna array in radians.
+    dec : float
         The declination of the source in radians.
     track_time : float
         The duration of the tracking in hours.
-    delta_t : float
-        The tracking time step in hours.
     t_0 : float
         The initial tracking time in hours.
+    n_times : int
+        The number of time steps.
+    f : float
+        The central frequency of the observation in Hz.
+    df : float
+        The frequency range of the observation in Hz.
+    n_freqs : int
+        The number of frequency samples.
 
     Returns
     -------
     track : np.ndarray
-        The uv sampling baselines list for each time step.
+        The uv sampling baselines listed for each time step and frequency.
     """
-    
-    def M(h):
-        """M.
+    # Compute the baselines in XYZ coordinates
+    X, Y, Z = ENU_to_XYZ(b_ENU, lat)
+    # Compute the time steps
+    h = np.linspace(t_0, t_0+track_time, n_times)*np.pi/12
+    # Compute the frequency range
+    f_range = np.linspace(f-df/2, f+df/2, n_freqs)
 
-        Function to compute the visibility rotation matrix.
-
-        Parameters
-        ----------
-        h : float
-            The hour angle in hours.
-        
-        Returns
-        -------
-        M : np.ndarray
-            The visibility rotation matrix.
-        """
-        return np.array([[np.sin(h/12*np.pi), -np.cos(h/12*np.pi), 0],
-                        [-np.sin(source_declination)*np.cos(h/12*np.pi), -np.sin(source_declination)*np.sin(h/12*np.pi), np.cos(source_declination)]])
-    
-    # Baseline transformation from (north,east,elev=0) to (x,y,z)
-    B = np.array([[-np.sin(array_latitud) , 0],
-            [0 , -1],
-            [np.cos(array_latitud) , 0]])
-
-    n_samples = int(track_time/delta_t)
     track = []
-    # Swap baselines (delta_x_i, delta_y_i) -> (delta_y_i, delta_x_i)
-    baselines_sw = baselines[:,[1, 0]]
-    # For each time step get the transformed uv point.
-    for t in range(n_samples):
-        track.append(baselines_sw.dot(B.T).dot(M(t_0+t*delta_t).T))
-    # Reshape list of arrays into one long list
-    return np.array(track).reshape((-1,2))
+    for t in h:
+        multi_band = []
+        for f_ in f_range:
+            u,v,w = XYZ_to_uvw(X, Y, Z, dec, t, f_)
+            multi_band.append(np.array([u,v,w]))
+        track.append(multi_band)
+    track = np.array(track).swapaxes(-1,-2).reshape(-1,3)
 
-
-def get_uv_plane(baseline, uv_dim=128):
-    """Get uv plane.
-
-    Function to compute the uv sampling mask from the baselines list.
-    Perform a 2D histogram of the baselines list with uv_dim bins.
-
-    Parameters
-    ----------
-    baseline : np.ndarray
-        The baselines list.
-    uv_dim : int
-        The uv-plane sampling mask size.
-        
-    Returns
-    -------
-    uv_plane : np.ndarray
-        The uv sampling mask of the antenna array. The dimensions are (uv_dim, uv_dim).
-        The value of each pixel is the number of uv samples in that pixel.
-        
-    """
-    # Count number of samples per uv grid
-    x_lim=np.max(np.absolute(baseline))#*1.1
-    y_lim=x_lim
-    uv_plane, _, _ = np.histogram2d(baseline[:,0],baseline[:,1],bins=uv_dim, range=[[-x_lim,x_lim],[-y_lim,y_lim]])
-    return np.fliplr(uv_plane.T)#/np.sum(uv_plane, axis=(0,1))
-
-def get_uv_mask(uv_plane):
-    """Get uv mask.
-
-    Function to compute the binary mask from the uv sampling grid.
-
-    Parameters
-    ----------
-    uv_plane : np.ndarray
-        The uv sampling mask.
-    
-    Returns
-    -------
-    uv_plane_mask : np.ndarray
-        The binary mask of the uv sampling mask. 
-        The value of each pixel is 1 if the pixel is sampled, 0 otherwise.
-    """
-    # Get binary mask from the uv sampled grid
-    uv_plane_mask = uv_plane.copy()
-    uv_plane_mask[np.where(uv_plane>0)] = 1
-    return uv_plane_mask
-
-def get_beam(uv_mask):
-    """Get beam.
-
-    Function to compute the telescope beam from the uv sampling mask.
-
-    Parameters
-    ----------  
-    uv_mask : np.ndarray
-        The uv sampling mask.
-
-    Returns
-    -------
-    beam : np.ndarray
-        The beam image of the antenna array. The beam is fftshifted (non centered).
-    """
-    return np.abs(np.fft.ifft2(uv_mask))
-
-def load_sky_model(path):
-    """Load sky model.
-
-    Function to load a sky model image.
-
-    Parameters
-    ----------
-    path : str
-        The path to the sky model image.
-
-    Returns
-    -------
-    sky : np.ndarray
-        The sky model image.
-    """
-    return np.array(Image.open(path).convert("L"))
-
-def get_sky_uv(sky):
-    """Get sky uv.
-    
-    Function to compute the Fourier transform of the sky model.
-
-    Parameters
-    ----------
-    sky : np.ndarray
-        The sky model image.
-    
-    Returns
-    -------
-    sky_uv : np.ndarray
-        The Fourier transform of the sky model. The image is fftshifted (non centered).
-    """
-    return np.fft.fft2(sky)
-
-def get_obs_uv(sky_uv, mask):
-    """Get obs uv.
-
-    Function to compute the observed uv-plane from the sky model and the uv sampling mask.
-
-    Parameters
-    ----------
-    sky_uv : np.ndarray
-        The sky model in Fourier/uv domain.
-    mask : np.ndarray
-        The uv sampling mask.
-
-    Returns
-    -------
-    obs_uv : np.ndarray
-        The observed uv-plane.
-    """
-    return np.fft.fftshift(sky_uv).copy()*mask
-
-def get_obs_sky(obs_uv, abs=False):
-    """Get obs sky.
-
-    Function to compute the observed sky model from the observed uv-plane.
-
-    Parameters
-    ----------
-    obs_uv : np.ndarray
-        The sampled sky model on the uv-plane.
-    abs : bool
-        If True, return the absolute value of the observed sky model.
-
-    Returns
-    -------
-    obs_sky : np.ndarray
-        The observed sky model.
-    """
-    return np.abs(np.fft.ifft2(np.fft.ifftshift(obs_uv))) if abs else np.fft.ifft2(np.fft.ifftshift(obs_uv))
+    return track
