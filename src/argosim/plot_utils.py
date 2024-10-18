@@ -63,6 +63,8 @@ def plot_antenna_arr(array, ax=None, fig=None):
     -------
     None
     """
+    # Center the array
+    array = array - np.mean(array, axis=0)
     if ax==None or fig==None:
         fig, ax = plt.subplots(1,1)
     ax.scatter(array[:,0], array[:,1],s=20, c='gray')
@@ -70,8 +72,8 @@ def plot_antenna_arr(array, ax=None, fig=None):
         ax.annotate(txt, (array[i,0], array[i,1]))
         ax.set_xlabel('x [m]')
         ax.set_ylabel('y [m]')
-        x_lim=max(abs(array[:,0]))*1.1
-        y_lim=max(abs(array[:,1]))*1.1
+        x_lim = np.max(np.abs(array))*1.1
+        y_lim = x_lim
         ax.set_xlim(-x_lim, x_lim)
         ax.set_ylim(-y_lim, y_lim)
         ax.set_aspect('equal', adjustable='box')
