@@ -1,13 +1,14 @@
 """Clean.
 
 This module contains the functions to perform 
-the clean algorithm on dirty observations.
+the Hogbom's clean algorithm on dirty observations.
 
 :Authors: Ezequiel Centofanti <ezequiel.centofanti@cea.fr>
 
 """
 
 import numpy as np
+from argosim.data_utils import gauss_source
 
 
 def shift_beam(beam, shift_x, shift_y):
@@ -95,3 +96,45 @@ def clean_beam(B, search_box=20):
     B_clean = B[y_max-search_box:y_max+search_box,x_max-search_box:x_max+search_box]
     B_clean = np.pad(B_clean,((y_max-search_box,B.shape[0]-y_max-search_box),(x_max-search_box,B.shape[1]-x_max-search_box)))
     return B_clean
+
+def clean_hogbom(I_obs, B, gamma=0.2, max_iter=100, threshold=None):
+    """Clean Hogbom.
+
+    Function to perform the Hogbom's clean algorithm on a dirty image.
+
+    Parameters
+    ----------
+    I_obs : np.ndarray
+        The dirty image.
+    B : np.ndarray
+        The beam image (fft shifted).
+    gamma : float
+        The clean gain.
+    max_iter : int
+        The maximum number of iterations.
+    threshold : float
+        The threshold to stop the cleaning process.
+
+    Returns
+    -------
+    I_clean : np.ndarray
+        The cleaned image.
+    """
+    I_res = I_obs.copy()
+    I_clean = np.zeros_like(I_obs)
+    sky_model = np.zeros_like(I_obs)
+    B_norm = np.fft.ifftshift(B/np.max(B))
+    # B_clean = clean_beam(B_norm, search_box=B_norm.shape[0]//8)
+    B_clean = gauss_source(B.shape[1], B.shape[0], np.array([0,0]), fwhm_pix=B.shape[0]//32)
+
+    for i in range(max_iter):
+        # Get peak coordinates and flux value
+        max_val, x_max, y_max, shift_x, shift_y = find_peak(I_res)
+        if threshold is not None and max_val<threshold:
+            break
+        # Subtract the peak from the dirty image
+        I_res -= gamma*max_val*shift_beam(B_norm,shift_x,shift_y)
+        sky_model[y_max,x_max] += gamma*max_val
+        I_clean += gamma*max_val*shift_beam(B_clean,shift_x,shift_y)
+        
+    return I_clean + I_res, sky_model
