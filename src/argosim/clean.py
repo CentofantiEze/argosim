@@ -97,7 +97,7 @@ def clean_beam(B, search_box=20):
     B_clean = np.pad(B_clean,((y_max-search_box,B.shape[0]-y_max-search_box),(x_max-search_box,B.shape[1]-x_max-search_box)))
     return B_clean
 
-def clean_hogbom(I_obs, B, gamma=0.2, max_iter=100, threshold=None):
+def clean_hogbom(I_obs, B, gamma=0.2, max_iter=100, threshold=None, clean_beam_size_px=2):
     """Clean Hogbom.
 
     Function to perform the Hogbom's clean algorithm on a dirty image.
@@ -125,7 +125,7 @@ def clean_hogbom(I_obs, B, gamma=0.2, max_iter=100, threshold=None):
     sky_model = np.zeros_like(I_obs)
     B_norm = np.fft.ifftshift(B/np.max(B))
     # B_clean = clean_beam(B_norm, search_box=B_norm.shape[0]//8)
-    B_clean = gauss_source(B.shape[1], B.shape[0], np.array([0,0]), fwhm_pix=B.shape[0]//32)
+    B_clean = gauss_source(B.shape[1], B.shape[0], np.array([0,0]), fwhm_pix=clean_beam_size_px)
 
     for i in range(max_iter):
         # Get peak coordinates and flux value
