@@ -80,7 +80,7 @@ def plot_antenna_arr(array, ax=None, fig=None):
     if ax==None or fig==None:
         plt.show()
 
-def plot_baselines(visibilities, n_baselines=None, ax=None, fig=None):
+def plot_baselines(visibilities, n_baselines=None, ax=None, fig=None, ENU=False):
     """Plot baselines.
 
     Function to plot the baselines in uv-space.
@@ -96,6 +96,8 @@ def plot_baselines(visibilities, n_baselines=None, ax=None, fig=None):
         The axis to plot the baselines. For plotting on a specific subplot axis.
     fig : matplotlib.figure.Figure
         The figure to plot the baselines. For plotting on a specific subplot axis.
+    ENU : bool
+        If True, plot the baselines in East-North-Up coordinates. Otherwise, plot in uv-space.
 
     Returns
     -------
@@ -107,15 +109,19 @@ def plot_baselines(visibilities, n_baselines=None, ax=None, fig=None):
     if n_baselines is not None:
         delta = int(visibilities.shape[0]/2)
         ax.scatter(visibilities[delta:delta+n_baselines,0], visibilities[delta:delta+n_baselines,1], s=2,c='k')
-    ax.set_xlabel(r'u x $\lambda$ [m]')
-    ax.set_ylabel(r'v x $\lambda$ [m]')
+    if ENU:
+        ax.set_xlabel('East [m]')
+        ax.set_ylabel('North [m]')
+    else:
+        ax.set_xlabel(r'u x $\lambda$ [m]')
+        ax.set_ylabel(r'v x $\lambda$ [m]')
     ax.set_xlim([np.min(visibilities), np.max(visibilities)])
     ax.set_ylim([np.min(visibilities), np.max(visibilities)])
     ax.set_aspect('equal', adjustable='box')
     if ax==None or fig==None:
         plt.show()
 
-def plot_sky(image):
+def plot_sky(image, fov_size=(1.,1.), ax=None, fig=None, title='Sky'):
     """Plot sky.
 
     Function to plot the sky model.
@@ -124,17 +130,27 @@ def plot_sky(image):
     ----------
     image : np.ndarray
         The sky model image.
+    fov_size : tuple
+        The field of view size in degrees.
 
     Returns
     -------
     None
     """
-    plt.imshow(image)
-    plt.show()
-    print('Image shape:', image.shape)
-    print('Image range: ({},{})'.format(np.min(image), np.max(image)))
+    if ax==None or fig==None:
+        fig, ax = plt.subplots(1,1)
+    im = ax.imshow(image,
+        extent= [-fov_size[0]/2, fov_size[0]/2, 
+                 -fov_size[1]/2, fov_size[1]/2])
+    fig.colorbar(im, ax=ax)
+    ax.set_xlabel('x [deg]')
+    ax.set_ylabel('y [deg]')
+    ax.set_title('{} ({}x{})'.format(title, image.shape[0], image.shape[1]))
+    if ax==None or fig==None:
+        plt.show()
 
-def plot_sky_uv(sky_uv):
+
+def plot_sky_uv(sky_uv, fov_size):
     """Plot sky uv.
 
     Function to plot the sky model in uv-space in logarithmic amplitud sale.
@@ -148,7 +164,20 @@ def plot_sky_uv(sky_uv):
     -------
     None
     """
-    plt.imshow(np.abs(np.fft.fftshift(sky_uv)), norm=matplotlib.colors.LogNorm())
+    max_u = (180/np.pi)*sky_uv.shape[0]/(2*fov_size[0])
+    max_v = (180/np.pi)*sky_uv.shape[1]/(2*fov_size[1])
+
+    plt.figure(figsize=(10,4))
+    plt.subplot(121)
+    plt.imshow(np.abs(sky_uv), extent=[-max_u, max_u, -max_v, max_v])
+    plt.xlabel(r'$u\times\lambda$ [m]')
+    plt.ylabel(r'$v\times\lambda$ [m]')
+    plt.title('Amplitude')
+    plt.subplot(122)
+    plt.imshow(np.angle(sky_uv), extent=[-max_u, max_u, -max_v, max_v])
+    plt.xlabel(r'$u\times\lambda$ [m]')
+    plt.ylabel(r'$v\times\lambda$ [m]')
+    plt.title('Phase')
     plt.show()
 
 def plot_sampled_sky(sky_uv):
