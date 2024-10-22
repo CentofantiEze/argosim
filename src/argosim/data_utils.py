@@ -106,15 +106,15 @@ def random_source(shape,pix_size):
     sigma = sigma2d()
     return gauss_source(shape[0], shape[1], mu, sigma, pix_size)
 
-def n_source_sky(shape, pix_size_list, source_intensity_list):
+def n_source_sky(shape_px, pix_size_list, source_intensity_list):
     """N source sky.
 
     Function to generate a sky image with multiple Gaussian sources at random positions.
 
     Parameters
     ----------
-    shape : tuple
-        The output image shape.
+    shape_px : tuple
+        The image size in pixels (Nx, Ny).
     pix_size_list : list
         The size in pixels of the Gaussian sources.
     source_intensity_list : list
@@ -126,4 +126,4 @@ def n_source_sky(shape, pix_size_list, source_intensity_list):
     sky : np.ndarray
         Image of size (nx,ny) containing the sky model.
     """
-    return sum([random_source((shape[0],shape[1]), pix_size)*intensity for pix_size, intensity in zip(pix_size_list,source_intensity_list)])
+    return sum([random_source((shape_px[0],shape_px[1]), pix_size)*intensity for pix_size, intensity in zip(pix_size_list,source_intensity_list)])
