@@ -253,3 +253,22 @@ def uv_track_multiband(b_ENU, lat = 35./180*np.pi, dec=35./180*np.pi, track_time
     track = np.array(track).swapaxes(-1,-2).reshape(-1,3)
 
     return track
+
+def combine_antenna_arr(arr1, arr2):
+    """Combine antenna arr.
+
+    Function to combine two antenna arrays.
+
+    Parameters
+    ----------
+    arr1 : np.ndarray
+        The first antenna array positions.
+    arr2 : np.ndarray
+        The second antenna array positions.
+
+    Returns
+    -------
+    arr : np.ndarray
+        The combined antenna array positions.
+    """
+    return np.concatenate((arr1, arr2), axis=0)
