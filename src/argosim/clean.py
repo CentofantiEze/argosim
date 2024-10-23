@@ -131,6 +131,7 @@ def clean_hogbom(I_obs, B, gamma=0.2, max_iter=100, threshold=None, clean_beam_s
         # Get peak coordinates and flux value
         max_val, x_max, y_max, shift_x, shift_y = find_peak(I_res)
         if threshold is not None and max_val<threshold:
+            print("Reached threshold at iteration {}".format(i))
             break
         # Subtract the peak from the dirty image
         I_res -= gamma*max_val*shift_beam(B_norm,shift_x,shift_y)
