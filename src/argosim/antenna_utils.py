@@ -272,3 +272,20 @@ def combine_antenna_arr(arr1, arr2):
         The combined antenna array positions.
     """
     return np.concatenate((arr1, arr2), axis=0)
+
+def load_antenna_enu_txt(path):
+    """Load antenna txt.
+
+    Function to load antenna ENU positions from a txt file.
+
+    Parameters
+    ----------
+    path : str
+        The path to the txt file.
+
+    Returns
+    -------
+    antenna_arr : np.ndarray
+        The antenna array positions.
+    """
+    return np.genfromtxt(path)
