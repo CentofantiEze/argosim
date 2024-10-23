@@ -73,29 +73,29 @@ def find_peak(I):
     max_val = np.max(I)
     return max_val, x_max, y_max, shift_x, shift_y
 
-def clean_beam(B, search_box=20):
-    """Clean beam.
+# def clean_beam(B, search_box=20):
+#     """Clean beam.
 
-    Function extract the clean beam image from the dirty beam image. 
-    A box of size search_box around the peak of the dirty beam image is
-    extracted and padded to the original size of the dirty beam image.
+#     Function extract the clean beam image from the dirty beam image. 
+#     A box of size search_box around the peak of the dirty beam image is
+#     extracted and padded to the original size of the dirty beam image.
 
-    Parameters
-    ----------
-    B : np.ndarray
-        The beam image.
-    search_box : int
-        The search box size in pixels.
+#     Parameters
+#     ----------
+#     B : np.ndarray
+#         The beam image.
+#     search_box : int
+#         The search box size in pixels.
     
-    Returns
-    -------
-    B_clean : np.ndarray
-        The cleaned beam image.
-    """
-    max_val, x_max, y_max, shift_x, shift_y = find_peak(B)
-    B_clean = B[y_max-search_box:y_max+search_box,x_max-search_box:x_max+search_box]
-    B_clean = np.pad(B_clean,((y_max-search_box,B.shape[0]-y_max-search_box),(x_max-search_box,B.shape[1]-x_max-search_box)))
-    return B_clean
+#     Returns
+#     -------
+#     B_clean : np.ndarray
+#         The cleaned beam image.
+#     """
+#     max_val, x_max, y_max, shift_x, shift_y = find_peak(B)
+#     B_clean = B[y_max-search_box:y_max+search_box,x_max-search_box:x_max+search_box]
+#     B_clean = np.pad(B_clean,((y_max-search_box,B.shape[0]-y_max-search_box),(x_max-search_box,B.shape[1]-x_max-search_box)))
+#     return B_clean
 
 def clean_hogbom(I_obs, B, gamma=0.2, max_iter=100, threshold=None, clean_beam_size_px=2):
     """Clean Hogbom.
@@ -123,7 +123,7 @@ def clean_hogbom(I_obs, B, gamma=0.2, max_iter=100, threshold=None, clean_beam_s
     I_res = I_obs.copy()
     I_clean = np.zeros_like(I_obs)
     sky_model = np.zeros_like(I_obs)
-    B_norm = np.fft.ifftshift(B/np.max(B))
+    B_norm = B/np.max(B)
     # B_clean = clean_beam(B_norm, search_box=B_norm.shape[0]//8)
     B_clean = gauss_source(B.shape[1], B.shape[0], np.array([0,0]), fwhm_pix=clean_beam_size_px)
 
