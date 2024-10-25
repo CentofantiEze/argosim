@@ -15,7 +15,6 @@ The aperture synthesis uv-sampling has ben simulated for the following parameter
 - Bandwidth: 1 GHz
 - Number of channels: 11
 
-
 ## Observation simulation for an ARGOS pathfinder-like array
 ![Observation simulation](figures/observation.png)
 
@@ -28,6 +27,11 @@ The aperture synthesis uv-sampling has ben simulated for the following parameter
 - Threshold: 1e-3
 - Clean beam size (pixels): 10
 
+# argosim installation
+```
+pip install .
+```
+
 # Docker installation
 Build the doker image from the repository.
 ```
@@ -38,18 +42,18 @@ Run the an _argosim_ container with an interactive shell. Mount the current dire
 docker run -itv ${PWD}:/workdir --rm argosim
 ```
 
-# Run the test script
+## Run the test script
 ```
 (argosim) root@container_id:home/# python /home/scripts/test.py
 ```
 The output images are saved to `/workdir` and mirrored into the host machine at `${PWD}`.
 
-# Run notebooks on docker container
+## Run notebooks on docker container
 ```
 docker run -p 8888:8888 -v ${PWD}:/workdir --rm argosim notebook
 ```
 
-# Useful docker commands
+### Useful docker commands
 ```
 # List of all images
 docker images
