@@ -45,7 +45,7 @@ def plot_beam(beam, pRng = (-0.1, 0.5), ax=None, fig=None):
     if ax==None or fig==None:
         plt.show()
 
-def plot_antenna_arr(array, ax=None, fig=None):
+def plot_antenna_arr(array, ax=None, fig=None, title='Array'):
     """Plot antenna array.
 
     Function to plot the antenna array in ground coordinates.
@@ -58,6 +58,8 @@ def plot_antenna_arr(array, ax=None, fig=None):
         The axis to plot the antenna array. For plotting on a specific subplot axis.
     fig : matplotlib.figure.Figure
         The figure to plot the antenna array. For plotting on a specific subplot axis.
+    title : str
+        The title of the plot.
     
     Returns
     -------
@@ -77,10 +79,11 @@ def plot_antenna_arr(array, ax=None, fig=None):
         ax.set_xlim(-x_lim, x_lim)
         ax.set_ylim(-y_lim, y_lim)
         ax.set_aspect('equal', adjustable='box')
+    ax.set_title(title)
     if ax==None or fig==None:
         plt.show()
 
-def plot_baselines(visibilities, n_baselines=None, ax=None, fig=None, ENU=False):
+def plot_baselines(visibilities, ax=None, fig=None, ENU=False, title='Baselines'):
     """Plot baselines.
 
     Function to plot the baselines in uv-space.
@@ -89,15 +92,14 @@ def plot_baselines(visibilities, n_baselines=None, ax=None, fig=None, ENU=False)
     ----------
     visibilities : np.ndarray
         The visibilities baselines in uv-space.
-    n_baselines : int
-        The number of baselines. Only for aperture synthesis. 
-        Plot the baselines halfway through the observations.
     ax : matplotlib.axes.Axes
         The axis to plot the baselines. For plotting on a specific subplot axis.
     fig : matplotlib.figure.Figure
         The figure to plot the baselines. For plotting on a specific subplot axis.
     ENU : bool
         If True, plot the baselines in East-North-Up coordinates. Otherwise, plot in uv-space.
+    title : str
+        The title of the plot.
 
     Returns
     -------
@@ -106,9 +108,9 @@ def plot_baselines(visibilities, n_baselines=None, ax=None, fig=None, ENU=False)
     if ax==None or fig==None:
         fig, ax = plt.subplots(1,1)
     ax.scatter(visibilities[:,0], visibilities[:,1],s=0.4, c='gray')
-    if n_baselines is not None:
-        delta = int(visibilities.shape[0]/2)
-        ax.scatter(visibilities[delta:delta+n_baselines,0], visibilities[delta:delta+n_baselines,1], s=2,c='k')
+    # if n_baselines is not None:
+    #     delta = int(visibilities.shape[0]/2)
+    #     ax.scatter(visibilities[delta:delta+n_baselines,0], visibilities[delta:delta+n_baselines,1], s=2,c='k')
     if ENU:
         ax.set_xlabel('East [m]')
         ax.set_ylabel('North [m]')
@@ -118,6 +120,7 @@ def plot_baselines(visibilities, n_baselines=None, ax=None, fig=None, ENU=False)
     ax.set_xlim([np.min(visibilities), np.max(visibilities)])
     ax.set_ylim([np.min(visibilities), np.max(visibilities)])
     ax.set_aspect('equal', adjustable='box')
+    ax.set_title(title)
     if ax==None or fig==None:
         plt.show()
 

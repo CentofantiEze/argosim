@@ -179,6 +179,24 @@ def uv2sky(uv):
     """
     return np.fft.fftshift(np.fft.ifft2(np.fft.ifftshift(uv))).real
 
+def compute_visibilities_grid(sky_uv, uv_mask):
+    """Compute visibilities gridded.
+
+    Function to compute the visibilities from the fourier sky and the uv sampling mask.
+
+    Parameters
+    ----------
+    sky_uv : np.ndarray
+        The sky model in Fourier/uv domain.
+    uv_mask : np.ndarray
+        The uv sampling mask.
+
+    Returns
+    -------
+    visibilities : np.ndarray
+        Gridded visibilities on the uv-plane.
+    """
+    return sky_uv*uv_mask+0+0.j
 
 # def compute_visibilities(sky_uv, uv_samples_indices):
 #     """Compute visibilities.
