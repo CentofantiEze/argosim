@@ -52,6 +52,11 @@ The output images are saved to `/workdir` and mirrored into the host machine at 
 ```
 docker run -p 8888:8888 -v ${PWD}:/workdir --rm argosim notebook
 ```
+Run the avobe command from a folder having access to the target notebooks (or simply replace `${PWD}` with the absolute path of such folder). The modifications and outputs produced while running in the container will be saved in the host machine at `${PWD}$`.
+
+The jupyter notebook server is running on the container. Copy the url (127.0.0.1:8888/tree?token=...) and paste it on the browser.
+
+To exit the container, shut down the jupyter kernel from the browser. The container will be automatically stopped.
 
 ### Useful docker commands
 ```
