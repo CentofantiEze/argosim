@@ -112,6 +112,42 @@ def random_antenna_arr(n_antenna=3, E_lim=1000, N_lim=1000, U_lim=0):
     # Return list of 'n' antenna locations (x_i, y_i) randomly distributed.
     return np.array([random_antenna_pos(E_lim, N_lim, U_lim) for i in range(n_antenna)])
 
+def uni_antenna_array(n_antenna_E=32, n_antenna_N=32, E_lim=800, N_lim=800, U_lim=0):
+    """Uniform (grid) antenna arr.
+
+    Function to generate a uniform antenna array. Antennas lie uniformely distributed
+    in the range, and center on [0,0,U_lim]:
+        [-E_lim/2, E_lim/2]x[-N_lim/2, N_lim/2]x[U_lim].
+    Only allow to generate a grid at a fixed height U_lim (fixed Up component).
+
+    Parameters
+    ----------
+    n_antenna_E : int
+        The number of antennas in the North direction (vertical).
+    n_antenna_N : int
+        The number of antennas in the East direction (horizontal).
+    E_lim : int
+        The east coordinate span width of the antenna positions in meters.
+    N_lim : int
+        The north coordinate span width of the antenna positions in meters.
+    U_lim : int
+        The up coordinate span width of the antenna positions in meters.
+
+    Returns
+    -------
+    antenna_arr : np.ndarray
+        The antenna array positions in ENU coordinates.
+    """
+    # Return list of 'n_antenna_E x n_antenna_N' antenna locations (x_i, y_i) uniformly distributed, with Up component = U_lim.
+    e = np.linspace(-E_lim/2, E_lim/2, n_antenna_E)
+    n = np.linspace(-N_lim/2, N_lim/2, n_antenna_N)
+    E, N = np.meshgrid(e, n)
+    E_flat = E.flatten()
+    N_flat = N.flatten()
+    U_flat = np.zeros_like(E_flat)*U_lim
+    array_grid = np.column_stack((E_flat, N_flat, U_flat))
+    return array_grid
+
 ########################################
 #  Compute baselines and uv sampling   #
 ########################################
