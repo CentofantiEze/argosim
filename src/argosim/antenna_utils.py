@@ -17,7 +17,7 @@ from PIL import Image
 #      Generate antenna positions      #
 ########################################
 
-def random_antenna_pos(E_lim = 1000, N_lim =1000, U_lim=0):
+def random_antenna_pos(E_lim = 1000., N_lim =1000., U_lim=0.):
     """Random antenna pos.
     
     Function to generate a random antenna location in ENU coordinates.
@@ -26,11 +26,11 @@ def random_antenna_pos(E_lim = 1000, N_lim =1000, U_lim=0):
     
     Parameters
     ----------
-    E_lim : int
+    E_lim : float
         The east coordinate span width of the antenna position in meters.
-    N_lim : int
+    N_lim : float
         The north coordinate span width of the antenna position in meters.
-    U_lim : int
+    U_lim : float
         The up coordinate span width of the antenna position in meters.
         
     Returns
@@ -41,7 +41,7 @@ def random_antenna_pos(E_lim = 1000, N_lim =1000, U_lim=0):
     # Return (x,y) random location for single dish
     return rnd.random_sample(3)*np.array([E_lim,N_lim,U_lim]) - np.array([E_lim, N_lim, 0.])/2
 
-def circular_antenna_arr(n_antenna= 3, r=300):
+def circular_antenna_arr(n_antenna= 3, r=300.):
     """Circular antenna arr.
 
     Function to generate a circular antenna array. Antennas lie in a circumference 
@@ -51,7 +51,7 @@ def circular_antenna_arr(n_antenna= 3, r=300):
     ----------
     n_antenna : int
         The number of antennas in the array. 
-    r : int
+    r : float
         The radius of the antenna array in meters.
 
     Returns
@@ -62,7 +62,7 @@ def circular_antenna_arr(n_antenna= 3, r=300):
     # Return list of 'n' antenna locations (x_i, y_i) equally spaced over a 'r' radius circumference.
     return np.array([[np.cos(angle)*r, np.sin(angle)*r, 0.] for angle in [2*np.pi/n_antenna*i for i in range(n_antenna)]])
 
-def y_antenna_arr(n_antenna=5, r=500, alpha=0):
+def y_antenna_arr(n_antenna=5, r=500., alpha=0.):
     """Y antenna arr.
 
     Function to generate a Y-shaped antenna array. Antennas lie equispaced in three radial arms
@@ -72,9 +72,9 @@ def y_antenna_arr(n_antenna=5, r=500, alpha=0):
     ----------
     n_antenna : int
         The number of antennas per arm.
-    r : int
+    r : float
         The radius of the antenna array in meters.
-    alpha : int
+    alpha : float
         The angle of the first arm.
 
     Returns
@@ -86,7 +86,7 @@ def y_antenna_arr(n_antenna=5, r=500, alpha=0):
     step = r/n_antenna
     return np.array([ [np.array([(i+1)*step*np.cos(angle/180*np.pi), (i+1)*step*np.sin(angle/180*np.pi), 0.]) for i in range(n_antenna)] for angle in [alpha, alpha+120, alpha+240] ]).reshape((3*n_antenna,3))
 
-def random_antenna_arr(n_antenna=3, E_lim=1000, N_lim=1000, U_lim=0):
+def random_antenna_arr(n_antenna=3, E_lim=1000., N_lim=1000., U_lim=0.):
     """Random antenna arr.
 
     Function to generate a random antenna array. Antennas lie randomly distributed
@@ -97,11 +97,11 @@ def random_antenna_arr(n_antenna=3, E_lim=1000, N_lim=1000, U_lim=0):
     ----------
     n_antenna : int
         The number of antennas in the array.
-    E_lim : int
+    E_lim : float
         The east coordinate span width of the antenna positions in meters.
-    N_lim : int
+    N_lim : float
         The north coordinate span width of the antenna positions in meters.
-    U_lim : int
+    U_lim : float
         The up coordinate span width of the antenna positions in meters.
 
     Returns
@@ -111,6 +111,42 @@ def random_antenna_arr(n_antenna=3, E_lim=1000, N_lim=1000, U_lim=0):
     """
     # Return list of 'n' antenna locations (x_i, y_i) randomly distributed.
     return np.array([random_antenna_pos(E_lim, N_lim, U_lim) for i in range(n_antenna)])
+
+def uni_antenna_array(n_antenna_E=32, n_antenna_N=32, E_lim=800., N_lim=800., U_lim=0.):
+    """Uniform (grid) antenna arr.
+
+    Function to generate a uniform antenna array. Antennas lie uniformely distributed
+    in the range, and center on [0,0,U_lim]:
+        [-E_lim/2, E_lim/2]x[-N_lim/2, N_lim/2]x[U_lim].
+    Only allow to generate a grid at a fixed height U_lim (fixed Up component).
+
+    Parameters
+    ----------
+    n_antenna_E : int
+        The number of antennas in the North direction (vertical).
+    n_antenna_N : int
+        The number of antennas in the East direction (horizontal).
+    E_lim : float
+        The east coordinate span width of the antenna positions in meters.
+    N_lim : float
+        The north coordinate span width of the antenna positions in meters.
+    U_lim : float
+        The up coordinate span width of the antenna positions in meters.
+
+    Returns
+    -------
+    antenna_arr : np.ndarray
+        The antenna array positions in ENU coordinates.
+    """
+    # Return list of 'n_antenna_E x n_antenna_N' antenna locations (x_i, y_i) uniformly distributed, with Up component = U_lim.
+    e = np.linspace(-E_lim/2, E_lim/2, n_antenna_E)
+    n = np.linspace(-N_lim/2, N_lim/2, n_antenna_N)
+    E, N = np.meshgrid(e, n)
+    E_flat = E.flatten()
+    N_flat = N.flatten()
+    U_flat = np.zeros_like(E_flat)+U_lim
+    array_grid = np.column_stack((E_flat, N_flat, U_flat))
+    return array_grid
 
 ########################################
 #  Compute baselines and uv sampling   #
