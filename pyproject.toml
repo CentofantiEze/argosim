@@ -14,6 +14,7 @@ dependencies = [
     "matplotlib>=3.8",
     "pillow>=10.1",
 ]
+version = "0.0.1"
 
 [project.optional-dependencies]
 lint = [
@@ -29,5 +30,3 @@ test = [
   "pytest-pydocstyle",
 ]
 dev = ["pycs[lint,release,test]"]
-
-version = "0.0.1"
