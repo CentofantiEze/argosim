@@ -32,20 +32,13 @@ jobs:
 
       - name: Install Package
         run: |
-          python -m pip install ".[test]"
+          python -m pip install ".[dev]"
 
       - name: Run Tests
         run: |
           python -m pytest
-
-  linter-check:
-    name: Black Linter
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Check Black formatting
-        uses: rickstaa/action-black@v1
-        with:
-          black_args: ". --check"
+      
+      - name: Linting Tests
+        run: |
+          black --check src/
+          isort --check src/

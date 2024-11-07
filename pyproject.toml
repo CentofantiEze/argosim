@@ -19,6 +19,7 @@ version = "0.0.1"
 [project.optional-dependencies]
 lint = [
     "black",
+    "isort",
 ]
 release = [
     "build",
@@ -29,7 +30,7 @@ test = [
   "pytest-cov",
   "pytest-pydocstyle",
 ]
-dev = ["pycs[lint,release,test]"]
+dev = ["argosim[lint,release,test]"]
 
 [tool.pytest.ini_options]
 addopts = "--verbose --pydocstyle --cov=argosim"

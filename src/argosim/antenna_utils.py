@@ -7,9 +7,9 @@ perform aperture synthesis, obtain uv-coverage and get observations from sky mod
 
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 import numpy.random as rnd
 from PIL import Image
 
@@ -17,13 +17,14 @@ from PIL import Image
 #      Generate antenna positions      #
 ########################################
 
-def random_antenna_pos(E_lim = 1000., N_lim =1000., U_lim=0.):
+
+def random_antenna_pos(E_lim=1000.0, N_lim=1000.0, U_lim=0.0):
     """Random antenna pos.
-    
+
     Function to generate a random antenna location in ENU coordinates.
     Antenna lies in the range:
         [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].
-    
+
     Parameters
     ----------
     E_lim : float
@@ -32,25 +33,29 @@ def random_antenna_pos(E_lim = 1000., N_lim =1000., U_lim=0.):
         The north coordinate span width of the antenna position in meters.
     U_lim : float
         The up coordinate span width of the antenna position in meters.
-        
+
     Returns
     -------
     antenna_pos : np.ndarray
         The antenna position in ENU coordinates.
     """
     # Return (x,y) random location for single dish
-    return rnd.random_sample(3)*np.array([E_lim,N_lim,U_lim]) - np.array([E_lim, N_lim, 0.])/2
+    return (
+        rnd.random_sample(3) * np.array([E_lim, N_lim, U_lim])
+        - np.array([E_lim, N_lim, 0.0]) / 2
+    )
 
-def circular_antenna_arr(n_antenna= 3, r=300.):
+
+def circular_antenna_arr(n_antenna=3, r=300.0):
     """Circular antenna arr.
 
-    Function to generate a circular antenna array. Antennas lie in a circumference 
+    Function to generate a circular antenna array. Antennas lie in a circumference
     of radius 'r' from the center [0,0] and are equally spaced.
 
     Parameters
     ----------
     n_antenna : int
-        The number of antennas in the array. 
+        The number of antennas in the array.
     r : float
         The radius of the antenna array in meters.
 
@@ -60,9 +65,15 @@ def circular_antenna_arr(n_antenna= 3, r=300.):
         The antenna array positions in ENU coordinates.
     """
     # Return list of 'n' antenna locations (x_i, y_i) equally spaced over a 'r' radius circumference.
-    return np.array([[np.cos(angle)*r, np.sin(angle)*r, 0.] for angle in [2*np.pi/n_antenna*i for i in range(n_antenna)]])
+    return np.array(
+        [
+            [np.cos(angle) * r, np.sin(angle) * r, 0.0]
+            for angle in [2 * np.pi / n_antenna * i for i in range(n_antenna)]
+        ]
+    )
 
-def y_antenna_arr(n_antenna=5, r=500., alpha=0.):
+
+def y_antenna_arr(n_antenna=5, r=500.0, alpha=0.0):
     """Y antenna arr.
 
     Function to generate a Y-shaped antenna array. Antennas lie equispaced in three radial arms
@@ -83,10 +94,25 @@ def y_antenna_arr(n_antenna=5, r=500., alpha=0.):
         The antenna array positions in ENU coordinates.
     """
     # Return list of 'n' antenna locations (x_i, y_i) equispaced on three (120 deg) radial arms.
-    step = r/n_antenna
-    return np.array([ [np.array([(i+1)*step*np.cos(angle/180*np.pi), (i+1)*step*np.sin(angle/180*np.pi), 0.]) for i in range(n_antenna)] for angle in [alpha, alpha+120, alpha+240] ]).reshape((3*n_antenna,3))
+    step = r / n_antenna
+    return np.array(
+        [
+            [
+                np.array(
+                    [
+                        (i + 1) * step * np.cos(angle / 180 * np.pi),
+                        (i + 1) * step * np.sin(angle / 180 * np.pi),
+                        0.0,
+                    ]
+                )
+                for i in range(n_antenna)
+            ]
+            for angle in [alpha, alpha + 120, alpha + 240]
+        ]
+    ).reshape((3 * n_antenna, 3))
 
-def random_antenna_arr(n_antenna=3, E_lim=1000., N_lim=1000., U_lim=0.):
+
+def random_antenna_arr(n_antenna=3, E_lim=1000.0, N_lim=1000.0, U_lim=0.0):
     """Random antenna arr.
 
     Function to generate a random antenna array. Antennas lie randomly distributed
@@ -112,7 +138,10 @@ def random_antenna_arr(n_antenna=3, E_lim=1000., N_lim=1000., U_lim=0.):
     # Return list of 'n' antenna locations (x_i, y_i) randomly distributed.
     return np.array([random_antenna_pos(E_lim, N_lim, U_lim) for i in range(n_antenna)])
 
-def uni_antenna_array(n_antenna_E=32, n_antenna_N=32, E_lim=800., N_lim=800., U_lim=0.):
+
+def uni_antenna_array(
+    n_antenna_E=32, n_antenna_N=32, E_lim=800.0, N_lim=800.0, U_lim=0.0
+):
     """Uniform (grid) antenna arr.
 
     Function to generate a uniform antenna array. Antennas lie uniformely distributed
@@ -139,18 +168,20 @@ def uni_antenna_array(n_antenna_E=32, n_antenna_N=32, E_lim=800., N_lim=800., U_
         The antenna array positions in ENU coordinates.
     """
     # Return list of 'n_antenna_E x n_antenna_N' antenna locations (x_i, y_i) uniformly distributed, with Up component = U_lim.
-    e = np.linspace(-E_lim/2, E_lim/2, n_antenna_E)
-    n = np.linspace(-N_lim/2, N_lim/2, n_antenna_N)
+    e = np.linspace(-E_lim / 2, E_lim / 2, n_antenna_E)
+    n = np.linspace(-N_lim / 2, N_lim / 2, n_antenna_N)
     E, N = np.meshgrid(e, n)
     E_flat = E.flatten()
     N_flat = N.flatten()
-    U_flat = np.zeros_like(E_flat)+U_lim
+    U_flat = np.zeros_like(E_flat) + U_lim
     array_grid = np.column_stack((E_flat, N_flat, U_flat))
     return array_grid
+
 
 ########################################
 #  Compute baselines and uv sampling   #
 ########################################
+
 
 def get_baselines(array):
     """Get baselines.
@@ -168,10 +199,15 @@ def get_baselines(array):
         The baselines of the antenna array.
     """
     # Get the baseline for every combination of antennas i-j.
-    # Remove the i=j baselines: np.delete(array, list, axis=0) -> delete the rows listed on 'list' from array 'array'. 
-    return np.delete(np.array([antenna_i-antenna_j for antenna_i in array for antenna_j in array]), [(len(array)+1)*n for n in range(len(array))], 0)
+    # Remove the i=j baselines: np.delete(array, list, axis=0) -> delete the rows listed on 'list' from array 'array'.
+    return np.delete(
+        np.array([antenna_i - antenna_j for antenna_i in array for antenna_j in array]),
+        [(len(array) + 1) * n for n in range(len(array))],
+        0,
+    )
 
-def ENU_to_XYZ(b_ENU, lat = 35./180*np.pi):
+
+def ENU_to_XYZ(b_ENU, lat=35.0 / 180 * np.pi):
     """ENU to XYZ.
 
     Function to convert the baselines from East-North-Up (ENU) to XYZ coordinates.
@@ -194,19 +230,20 @@ def ENU_to_XYZ(b_ENU, lat = 35./180*np.pi):
     """
     # Compute baseline length, Azimuth and Elevation angles
     D = np.sqrt(np.sum(b_ENU**2, axis=1))
-    A = np.arctan2(b_ENU[:,0], b_ENU[:,1])
-    E = np.arcsin(b_ENU[:,2]/D)
+    A = np.arctan2(b_ENU[:, 0], b_ENU[:, 1])
+    E = np.arcsin(b_ENU[:, 2] / D)
     # Compute the baseline in XYZ coordinates
-    X = D*(np.cos(lat)*np.sin(E)-np.sin(lat)*np.cos(E)*np.cos(A))
-    Y = D*np.cos(E)*np.sin(A)
-    Z = D*(np.sin(lat)*np.sin(E)+np.cos(lat)*np.cos(E)*np.cos(A))
+    X = D * (np.cos(lat) * np.sin(E) - np.sin(lat) * np.cos(E) * np.cos(A))
+    Y = D * np.cos(E) * np.sin(A)
+    Z = D * (np.sin(lat) * np.sin(E) + np.cos(lat) * np.cos(E) * np.cos(A))
 
-    return X,Y,Z
+    return X, Y, Z
 
-def XYZ_to_uvw(X, Y, Z, dec=30./180*np.pi , ha=0., f=1420e6):
+
+def XYZ_to_uvw(X, Y, Z, dec=30.0 / 180 * np.pi, ha=0.0, f=1420e6):
     """XYZ to uvw.
 
-    Get the uvw sampling points from the XYZ coordinates given a 
+    Get the uvw sampling points from the XYZ coordinates given a
         source declination, hour angle and frequency.
 
     Parameters
@@ -234,14 +271,28 @@ def XYZ_to_uvw(X, Y, Z, dec=30./180*np.pi , ha=0., f=1420e6):
         The w coordinate of the baselines in uvw coordinates.
     """
     c = 299792458
-    lam_inv = f/c
-    u = lam_inv*(np.sin(ha)*X+np.cos(ha)*Y)
-    v = lam_inv*(-np.sin(dec)*np.cos(ha)*X+np.sin(dec)*np.sin(ha)*Y+np.cos(dec)*Z)
-    w = lam_inv*(np.cos(dec)*np.cos(ha)*X-np.cos(dec)*np.sin(ha)*Y+np.sin(dec)*Z)
-    return u,v,w
-    
+    lam_inv = f / c
+    u = lam_inv * (np.sin(ha) * X + np.cos(ha) * Y)
+    v = lam_inv * (
+        -np.sin(dec) * np.cos(ha) * X + np.sin(dec) * np.sin(ha) * Y + np.cos(dec) * Z
+    )
+    w = lam_inv * (
+        np.cos(dec) * np.cos(ha) * X - np.cos(dec) * np.sin(ha) * Y + np.sin(dec) * Z
+    )
+    return u, v, w
 
-def uv_track_multiband(b_ENU, lat = 35./180*np.pi, dec=35./180*np.pi, track_time=0., t_0=0., n_times = 1 , f=1420e6, df=0., n_freqs=1):
+
+def uv_track_multiband(
+    b_ENU,
+    lat=35.0 / 180 * np.pi,
+    dec=35.0 / 180 * np.pi,
+    track_time=0.0,
+    t_0=0.0,
+    n_times=1,
+    f=1420e6,
+    df=0.0,
+    n_freqs=1,
+):
     """Uv track multiband.
 
     Function to compute the uv sampling baselines for a given observation time and frequency range.
@@ -275,20 +326,21 @@ def uv_track_multiband(b_ENU, lat = 35./180*np.pi, dec=35./180*np.pi, track_time
     # Compute the baselines in XYZ coordinates
     X, Y, Z = ENU_to_XYZ(b_ENU, lat)
     # Compute the time steps
-    h = np.linspace(t_0, t_0+track_time, n_times)*np.pi/12
+    h = np.linspace(t_0, t_0 + track_time, n_times) * np.pi / 12
     # Compute the frequency range
-    f_range = np.linspace(f-df/2, f+df/2, n_freqs)
+    f_range = np.linspace(f - df / 2, f + df / 2, n_freqs)
 
     track = []
     for t in h:
         multi_band = []
         for f_ in f_range:
-            u,v,w = XYZ_to_uvw(X, Y, Z, dec, t, f_)
-            multi_band.append(np.array([u,v,w]))
+            u, v, w = XYZ_to_uvw(X, Y, Z, dec, t, f_)
+            multi_band.append(np.array([u, v, w]))
         track.append(multi_band)
-    track = np.array(track).swapaxes(-1,-2).reshape(-1,3)
+    track = np.array(track).swapaxes(-1, -2).reshape(-1, 3)
 
     return track
+
 
 def combine_antenna_arr(arr1, arr2):
     """Combine antenna arr.
@@ -308,6 +360,7 @@ def combine_antenna_arr(arr1, arr2):
         The combined antenna array positions.
     """
     return np.concatenate((arr1, arr2), axis=0)
+
 
 def load_antenna_enu_txt(path):
     """Load antenna txt.

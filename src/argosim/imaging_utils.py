@@ -6,9 +6,9 @@ This module contains functions to perform radio interferometric imaging.
 
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 import numpy.random as rnd
 from PIL import Image
 
@@ -28,13 +28,13 @@ from PIL import Image
 #         The baselines list.
 #     uv_dim : int
 #         The uv-plane sampling mask size.
-        
+
 #     Returns
 #     -------
 #     uv_plane : np.ndarray
 #         The uv sampling mask of the antenna array. The dimensions are (uv_dim, uv_dim).
 #         The value of each pixel is the number of uv samples in that pixel.
-        
+
 #     """
 #     # Count number of samples per uv grid
 #     x_lim=np.max(np.absolute(baseline))#*1.1
@@ -51,11 +51,11 @@ from PIL import Image
 #     ----------
 #     uv_plane : np.ndarray
 #         The uv sampling mask.
-    
+
 #     Returns
 #     -------
 #     uv_plane_mask : np.ndarray
-#         The binary mask of the uv sampling mask. 
+#         The binary mask of the uv sampling mask.
 #         The value of each pixel is 1 if the pixel is sampled, 0 otherwise.
 #     """
 #     # Get binary mask from the uv sampled grid
@@ -69,7 +69,7 @@ from PIL import Image
 #     Function to compute the telescope beam from the uv sampling mask.
 
 #     Parameters
-#     ----------  
+#     ----------
 #     uv_mask : np.ndarray
 #         The uv sampling mask.
 
@@ -79,6 +79,7 @@ from PIL import Image
 #         The beam image of the antenna array. The beam is fftshifted (non centered).
 #     """
 #     return np.abs(np.fft.ifft2(uv_mask))
+
 
 def load_sky_model(path):
     """Load sky model.
@@ -97,25 +98,29 @@ def load_sky_model(path):
     """
     return np.array(Image.open(path).convert("L"))
 
+
 def sky2uv(sky):
     """Sky to uv plane.
-    
+
     Function to compute the Fourier transform of the sky.
 
     Parameters
     ----------
     sky : np.ndarray
         The sky image.
-    
+
     Returns
     -------
     sky_uv : np.ndarray
-        The Fourier transform of the sky. 
+        The Fourier transform of the sky.
     """
     # return np.fft.fft2(sky)
     return np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(sky)))
 
-def grid_uv_samples(uv_samples, sky_uv_shape,  fov_size, mask_type='binary', weights=None):
+
+def grid_uv_samples(
+    uv_samples, sky_uv_shape, fov_size, mask_type="binary", weights=None
+):
     """Grid uv samples.
 
     Compute the uv sampling mask from the uv samples.
@@ -140,27 +145,41 @@ def grid_uv_samples(uv_samples, sky_uv_shape,  fov_size, mask_type='binary', wei
     uv_samples_indices : np.ndarray
         The indices of the uv samples in pixel coordinates.
     """
-    max_u = (180/np.pi)*sky_uv_shape[0]/(2*fov_size[0])
-    max_v = (180/np.pi)*sky_uv_shape[1]/(2*fov_size[1])
-    uv_samples_indices = np.rint(uv_samples[:,:2]/np.array([max_u, max_v])*np.array(sky_uv_shape)) + np.array(sky_uv_shape)/2
-    
+    max_u = (180 / np.pi) * sky_uv_shape[0] / (2 * fov_size[0])
+    max_v = (180 / np.pi) * sky_uv_shape[1] / (2 * fov_size[1])
+    uv_samples_indices = (
+        np.rint(uv_samples[:, :2] / np.array([max_u, max_v]) * np.array(sky_uv_shape))
+        + np.array(sky_uv_shape) / 2
+    )
+
     if any(np.array(sky_uv_shape) <= np.max(uv_samples_indices, axis=0)):
-        raise ValueError("uv samples are out of the uv-plane range. Required Npix > {}".format(np.max(uv_samples_indices, axis=0)))
+        raise ValueError(
+            "uv samples are out of the uv-plane range. Required Npix > {}".format(
+                np.max(uv_samples_indices, axis=0)
+            )
+        )
 
     uv_mask = np.zeros(sky_uv_shape, dtype=complex)
 
     for index in uv_samples_indices:
-        if mask_type == 'binary':
-            uv_mask[int(index[1]), int(index[0])] = 1+0j
-        elif mask_type == 'histogram':
-            uv_mask[int(index[1]), int(index[0])] += 1+0j
-        elif mask_type == 'weighted':
-            assert weights is not None, "Weights must be provided for mask type 'weighted'."
-            uv_mask[int(index[1]), int(index[0])] += weights[int(index[0]), int(index[1])]
+        if mask_type == "binary":
+            uv_mask[int(index[1]), int(index[0])] = 1 + 0j
+        elif mask_type == "histogram":
+            uv_mask[int(index[1]), int(index[0])] += 1 + 0j
+        elif mask_type == "weighted":
+            assert (
+                weights is not None
+            ), "Weights must be provided for mask type 'weighted'."
+            uv_mask[int(index[1]), int(index[0])] += weights[
+                int(index[0]), int(index[1])
+            ]
         else:
-            raise ValueError("Invalid mask type. Choose between 'binary', 'histogram' and 'weighted'.")
-        
+            raise ValueError(
+                "Invalid mask type. Choose between 'binary', 'histogram' and 'weighted'."
+            )
+
     return uv_mask, uv_samples_indices
+
 
 def uv2sky(uv):
     """Uv to sky.
@@ -179,6 +198,7 @@ def uv2sky(uv):
     """
     return np.fft.fftshift(np.fft.ifft2(np.fft.ifftshift(uv))).real
 
+
 def compute_visibilities_grid(sky_uv, uv_mask):
     """Compute visibilities gridded.
 
@@ -196,7 +216,8 @@ def compute_visibilities_grid(sky_uv, uv_mask):
     visibilities : np.ndarray
         Gridded visibilities on the uv-plane.
     """
-    return sky_uv*uv_mask+0+0.j
+    return sky_uv * uv_mask + 0 + 0.0j
+
 
 # def compute_visibilities(sky_uv, uv_samples_indices):
 #     """Compute visibilities.
