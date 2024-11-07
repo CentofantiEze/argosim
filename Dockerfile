@@ -18,4 +18,4 @@ RUN echo "path: $PATH" && \
     pip install /home
 
 # RUN echo -e '#!/bin/bash\nsource /venv/bin/activate\njupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root' > /usr/bin/notebook && chmod +x /usr/bin/notebook
-RUN echo '#!/bin/bash\nconda activate argosim\njupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root' > /usr/bin/notebook && chmod +x /usr/bin/notebook
+RUN echo -e '#!/bin/bash\nconda activate argosim\njupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root' > /usr/bin/notebook && chmod +x /usr/bin/notebook
