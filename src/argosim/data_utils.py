@@ -1,4 +1,4 @@
-"""Data uils. 
+"""Data uils.
 
 This module contains functions to generate synthetic observations for the Argosim project.
 

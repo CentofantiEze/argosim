@@ -30,3 +30,7 @@ test = [
   "pytest-pydocstyle",
 ]
 dev = ["pycs[lint,release,test]"]
+
+[tool.pytest.ini_options]
+addopts = "--verbose --pydocstyle --cov=argosim"
+testpaths = ["src/argosim"]
