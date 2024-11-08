@@ -1,6 +1,8 @@
 FROM continuumio/miniconda3
 
 LABEL Description="ARGOSim Docker Image"
+
+SHELL ["/bin/bash", "-c"]
 WORKDIR /workdir
 ENV SHELL /bin/bash
 
