@@ -22,8 +22,7 @@ def random_antenna_pos(E_lim=1000.0, N_lim=1000.0, U_lim=0.0):
     """Random antenna pos.
 
     Function to generate a random antenna location in ENU coordinates.
-    Antenna lies in the range:
-        [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].
+    Antenna lies in the range: [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].
 
     Parameters
     ----------
@@ -116,8 +115,7 @@ def random_antenna_arr(n_antenna=3, E_lim=1000.0, N_lim=1000.0, U_lim=0.0):
     """Random antenna arr.
 
     Function to generate a random antenna array. Antennas lie randomly distributed
-    in the range:
-        [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].
+    in the range: [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].
 
     Parameters
     ----------
@@ -145,8 +143,7 @@ def uni_antenna_array(
     """Uniform (grid) antenna arr.
 
     Function to generate a uniform antenna array. Antennas lie uniformely distributed
-    in the range, and center on [0,0,U_lim]:
-        [-E_lim/2, E_lim/2]x[-N_lim/2, N_lim/2]x[U_lim].
+    in the range, and center on [0,0,U_lim]: [-E_lim/2, E_lim/2]x[-N_lim/2, N_lim/2]x[U_lim].
     Only allow to generate a grid at a fixed height U_lim (fixed Up component).
 
     Parameters
@@ -244,7 +241,7 @@ def XYZ_to_uvw(X, Y, Z, dec=30.0 / 180 * np.pi, ha=0.0, f=1420e6):
     """XYZ to uvw.
 
     Get the uvw sampling points from the XYZ coordinates given a
-        source declination, hour angle and frequency.
+    source declination, hour angle and frequency.
 
     Parameters
     ----------

@@ -17,6 +17,12 @@ dependencies = [
 version = "0.0.1"
 
 [project.optional-dependencies]
+doc = [
+    "myst-parser",
+    "numpydoc",
+    "sphinx",
+    "sphinx-book-theme"
+]
 lint = [
     "black",
     "isort",
@@ -30,7 +36,7 @@ test = [
   "pytest-cov",
   "pytest-pydocstyle",
 ]
-dev = ["argosim[lint,release,test]"]
+dev = ["argosim[doc,lint,release,test]"]
 
 [tool.pytest.ini_options]
 addopts = "--verbose --pydocstyle --cov=argosim"
