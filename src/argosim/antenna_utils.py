@@ -137,7 +137,9 @@ def random_antenna_arr(n_antenna=3, E_lim=1000.0, N_lim=1000.0, U_lim=0.0):
     return np.array([random_antenna_pos(E_lim, N_lim, U_lim) for i in range(n_antenna)])
 
 
-def uni_antenna_array(n_antenna_E=32, n_antenna_N=32, E_lim=800.0, N_lim=800.0, U_lim=0.0):
+def uni_antenna_array(
+    n_antenna_E=32, n_antenna_N=32, E_lim=800.0, N_lim=800.0, U_lim=0.0
+):
     """Uniform (grid) antenna arr.
 
     Function to generate a uniform antenna array. Antennas lie uniformely distributed
