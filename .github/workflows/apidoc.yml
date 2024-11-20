@@ -6,6 +6,9 @@ on:
      - main
      - workflow_apidoc
 
+permissions:
+  contents: write
+
 jobs:
 
   api:
