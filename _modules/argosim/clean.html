@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>argosim.clean &#8212; Argosim 0.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=e645c8fa"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/argosim/clean';</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Argosim 0.0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">About Argosim</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributors.html">Contributors</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Installing Argosim</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../dependencies.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Running Argosim</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../running.html">Execution</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Example</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../example.html">Basic simulation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">argosim</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../argosim.html">argosim package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../argosim.antenna_utils.html">argosim.antenna_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../argosim.clean.html">argosim.clean module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../argosim.data_utils.html">argosim.data_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../argosim.imaging_utils.html">argosim.imaging_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../argosim.plot_utils.html">argosim.plot_utils module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for argosim.clean</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Clean.</span>
+
+<span class="sd">This module contains the functions to perform </span>
+<span class="sd">the Hogbom&#39;s clean algorithm on dirty observations.</span>
+
+<span class="sd">:Authors: Ezequiel Centofanti &lt;ezequiel.centofanti@cea.fr&gt;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">argosim.data_utils</span> <span class="kn">import</span> <span class="n">gauss_source</span>
+
+
+<div class="viewcode-block" id="shift_beam">
+<a class="viewcode-back" href="../../argosim.clean.html#argosim.clean.shift_beam">[docs]</a>
+<span class="k">def</span> <span class="nf">shift_beam</span><span class="p">(</span><span class="n">beam</span><span class="p">,</span> <span class="n">shift_x</span><span class="p">,</span> <span class="n">shift_y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shift beam.</span>
+
+<span class="sd">    Function to shift the beam image by a given amount of pixels in the</span>
+<span class="sd">    x and y directions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    beam : np.ndarray</span>
+<span class="sd">        The beam image.</span>
+<span class="sd">    shift_x : int</span>
+<span class="sd">        The shift in the x direction.</span>
+<span class="sd">    shift_y : int</span>
+<span class="sd">        The shift in the y direction.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    beam_shift : np.ndarray</span>
+<span class="sd">        The shifted beam image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">beam_shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">beam</span><span class="p">,</span> <span class="n">shift_x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shift_x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">beam_shift</span><span class="p">[:,</span> <span class="n">shift_x</span><span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">beam_shift</span><span class="p">[:,</span> <span class="p">:</span><span class="n">shift_x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">beam_shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">beam_shift</span><span class="p">,</span> <span class="n">shift_y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shift_y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">beam_shift</span><span class="p">[</span><span class="n">shift_y</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">beam_shift</span><span class="p">[:</span><span class="n">shift_y</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">beam_shift</span></div>
+
+
+
+<div class="viewcode-block" id="find_peak">
+<a class="viewcode-back" href="../../argosim.clean.html#argosim.clean.find_peak">[docs]</a>
+<span class="k">def</span> <span class="nf">find_peak</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find peak.</span>
+
+<span class="sd">    Function to find the peak of an image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    I : np.ndarray</span>
+<span class="sd">        The image.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    max_val : float</span>
+<span class="sd">        The maximum value of the image.</span>
+<span class="sd">    x_max : int</span>
+<span class="sd">        The x coordinate of the maximum value.</span>
+<span class="sd">    y_max : int</span>
+<span class="sd">        The y coordinate of the maximum value.</span>
+<span class="sd">    shift_x : int</span>
+<span class="sd">        The shift in the x direction from the center of the image.</span>
+<span class="sd">    shift_y : int</span>
+<span class="sd">        The shift in the y direction from the center of the image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y_max</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">/</span> <span class="n">I</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">I</span><span class="p">),</span> <span class="n">I</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">x_off</span><span class="p">,</span> <span class="n">y_off</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">I</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">I</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">shift_x</span><span class="p">,</span> <span class="n">shift_y</span> <span class="o">=</span> <span class="n">x_max</span> <span class="o">-</span> <span class="n">x_off</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">-</span> <span class="n">y_off</span>
+    <span class="n">max_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">shift_x</span><span class="p">,</span> <span class="n">shift_y</span></div>
+
+
+
+<span class="c1"># def clean_beam(B, search_box=20):</span>
+<span class="c1">#     &quot;&quot;&quot;Clean beam.</span>
+
+<span class="c1">#     Function extract the clean beam image from the dirty beam image.</span>
+<span class="c1">#     A box of size search_box around the peak of the dirty beam image is</span>
+<span class="c1">#     extracted and padded to the original size of the dirty beam image.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     B : np.ndarray</span>
+<span class="c1">#         The beam image.</span>
+<span class="c1">#     search_box : int</span>
+<span class="c1">#         The search box size in pixels.</span>
+
+<span class="c1">#     Returns</span>
+<span class="c1">#     -------</span>
+<span class="c1">#     B_clean : np.ndarray</span>
+<span class="c1">#         The cleaned beam image.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     max_val, x_max, y_max, shift_x, shift_y = find_peak(B)</span>
+<span class="c1">#     B_clean = B[y_max-search_box:y_max+search_box,x_max-search_box:x_max+search_box]</span>
+<span class="c1">#     B_clean = np.pad(B_clean,((y_max-search_box,B.shape[0]-y_max-search_box),(x_max-search_box,B.shape[1]-x_max-search_box)))</span>
+<span class="c1">#     return B_clean</span>
+
+
+<div class="viewcode-block" id="clean_hogbom">
+<a class="viewcode-back" href="../../argosim.clean.html#argosim.clean.clean_hogbom">[docs]</a>
+<span class="k">def</span> <span class="nf">clean_hogbom</span><span class="p">(</span>
+    <span class="n">I_obs</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clean_beam_size_px</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clean Hogbom.</span>
+
+<span class="sd">    Function to perform the Hogbom&#39;s clean algorithm on a dirty image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    I_obs : np.ndarray</span>
+<span class="sd">        The dirty image.</span>
+<span class="sd">    B : np.ndarray</span>
+<span class="sd">        The beam image (fft shifted).</span>
+<span class="sd">    gamma : float</span>
+<span class="sd">        The clean gain.</span>
+<span class="sd">    max_iter : int</span>
+<span class="sd">        The maximum number of iterations.</span>
+<span class="sd">    threshold : float</span>
+<span class="sd">        The threshold to stop the cleaning process.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    I_clean : np.ndarray</span>
+<span class="sd">        The cleaned image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">I_res</span> <span class="o">=</span> <span class="n">I_obs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">I_clean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">I_obs</span><span class="p">)</span>
+    <span class="n">sky_model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">I_obs</span><span class="p">)</span>
+    <span class="n">B_norm</span> <span class="o">=</span> <span class="n">B</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="c1"># B_clean = clean_beam(B_norm, search_box=B_norm.shape[0]//8)</span>
+    <span class="n">B_clean</span> <span class="o">=</span> <span class="n">gauss_source</span><span class="p">(</span>
+        <span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">fwhm_pix</span><span class="o">=</span><span class="n">clean_beam_size_px</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="c1"># Get peak coordinates and flux value</span>
+        <span class="n">max_val</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">shift_x</span><span class="p">,</span> <span class="n">shift_y</span> <span class="o">=</span> <span class="n">find_peak</span><span class="p">(</span><span class="n">I_res</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">max_val</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reached threshold at iteration </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="k">break</span>
+        <span class="c1"># Subtract the peak from the dirty image</span>
+        <span class="n">I_res</span> <span class="o">-=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">max_val</span> <span class="o">*</span> <span class="n">shift_beam</span><span class="p">(</span><span class="n">B_norm</span><span class="p">,</span> <span class="n">shift_x</span><span class="p">,</span> <span class="n">shift_y</span><span class="p">)</span>
+        <span class="n">sky_model</span><span class="p">[</span><span class="n">y_max</span><span class="p">,</span> <span class="n">x_max</span><span class="p">]</span> <span class="o">+=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">max_val</span>
+        <span class="n">I_clean</span> <span class="o">+=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">max_val</span> <span class="o">*</span> <span class="n">shift_beam</span><span class="p">(</span><span class="n">B_clean</span><span class="p">,</span> <span class="n">shift_x</span><span class="p">,</span> <span class="n">shift_y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">I_clean</span> <span class="o">+</span> <span class="n">I_res</span><span class="p">,</span> <span class="n">sky_model</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ezequiel Centofanti, Emma Aycoberry
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Ezequiel Centofanti, Emma Aycoberry.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
