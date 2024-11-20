@@ -30,7 +30,6 @@ jobs:
       - name: Build API documentation
         shell: bash -l {0}
         run: |
-          conda activate argosim
           sphinx-apidoc -Mfeo docs/source src/argosim
           sphinx-build docs/source docs/build
 
