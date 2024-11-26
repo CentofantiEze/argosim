@@ -499,6 +499,34 @@
 
 
 
+<div class="viewcode-block" id="add_noise_uv">
+<a class="viewcode-back" href="../../argosim.imaging_utils.html#argosim.imaging_utils.add_noise_uv">[docs]</a>
+<span class="k">def</span> <span class="nf">add_noise_uv</span><span class="p">(</span><span class="n">vis</span><span class="p">,</span> <span class="n">uv_mask</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add noise in uv-plane.</span>
+
+<span class="sd">    Function to add white gaussian noise to the visibilities in the uv-plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vis : np.ndarray</span>
+<span class="sd">        The visibilities.</span>
+<span class="sd">    mask : np.ndarray</span>
+<span class="sd">        The uv sampling mask.</span>
+<span class="sd">    sigma : float</span>
+<span class="sd">        The standard deviation of the noise.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vis : np.ndarray</span>
+<span class="sd">        The visibilities with added noise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">noise_sky</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">vis</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">noise_uv</span> <span class="o">=</span> <span class="n">sky2uv</span><span class="p">(</span><span class="n">noise_sky</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">vis</span> <span class="o">+</span> <span class="n">compute_visibilities_grid</span><span class="p">(</span><span class="n">noise_uv</span><span class="p">,</span> <span class="n">uv_mask</span><span class="p">)</span></div>
+
+
+
 <span class="c1"># def compute_visibilities(sky_uv, uv_samples_indices):</span>
 <span class="c1">#     &quot;&quot;&quot;Compute visibilities.</span>
 
