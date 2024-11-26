@@ -46,6 +46,8 @@ sky_uv = sky2uv(sky)
 uv_mask, uv_sample_indices  = grid_uv_samples(track, sky_uv.shape, fov_size)
 # plot_sky_uv(uv_mask, fov_size)
 vis = compute_visibilities_grid(sky_uv, uv_mask)
+# Add noise
+vis = add_noise_uv(vis, uv_mask, sigma=0.2)
 # plot_sky_uv(vis, fov_size)
 
 obs = uv2sky(vis)
