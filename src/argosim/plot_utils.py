@@ -85,7 +85,7 @@ def plot_antenna_arr(array, ax=None, fig=None, title="Array"):
         plt.show()
 
 
-def plot_baselines(visibilities, ax=None, fig=None, ENU=False, title="Baselines"):
+def plot_baselines(visibilities, ax=None, fig=None, ENU=False):
     """Plot baselines.
 
     Function to plot the baselines in uv-space.
@@ -109,20 +109,24 @@ def plot_baselines(visibilities, ax=None, fig=None, ENU=False, title="Baselines"
     """
     if ax == None or fig == None:
         fig, ax = plt.subplots(1, 1)
-    ax.scatter(visibilities[:, 0], visibilities[:, 1], s=0.4, c="gray")
     # if n_baselines is not None:
     #     delta = int(visibilities.shape[0]/2)
     #     ax.scatter(visibilities[delta:delta+n_baselines,0], visibilities[delta:delta+n_baselines,1], s=2,c='k')
     if ENU:
         ax.set_xlabel("East [m]")
         ax.set_ylabel("North [m]")
+        ax.set_title("Baselines")
+        ax.scatter(visibilities[:, 0], visibilities[:, 1], s=0.4, c="gray")
+        ax.set_xlim([np.min(visibilities), np.max(visibilities)])
+        ax.set_ylim([np.min(visibilities), np.max(visibilities)])
     else:
-        ax.set_xlabel(r"u x $\lambda$ [m]")
-        ax.set_ylabel(r"v x $\lambda$ [m]")
-    ax.set_xlim([np.min(visibilities), np.max(visibilities)])
-    ax.set_ylim([np.min(visibilities), np.max(visibilities)])
+        ax.set_xlabel(r"u(k$\lambda$)")
+        ax.set_ylabel(r"v(k$\lambda$)")
+        ax.set_title(r"uv-plane")
+        ax.scatter(visibilities[:, 0]/1000, visibilities[:, 1]/1000, s=0.4, c="gray")
+        ax.set_xlim([np.min(visibilities)/1000, np.max(visibilities)/1000])
+        ax.set_ylim([np.min(visibilities)/1000, np.max(visibilities)/1000])
     ax.set_aspect("equal", adjustable="box")
-    ax.set_title(title)
     if ax == None or fig == None:
         plt.show()
 
@@ -171,19 +175,19 @@ def plot_sky_uv(sky_uv, fov_size):
     -------
     None
     """
-    max_u = (180 / np.pi) * sky_uv.shape[0] / (2 * fov_size[0])
-    max_v = (180 / np.pi) * sky_uv.shape[1] / (2 * fov_size[1])
+    max_u = ((180 / np.pi) * sky_uv.shape[0] / (2 * fov_size[0])/1000)
+    max_v = ((180 / np.pi) * sky_uv.shape[1] / (2 * fov_size[1])/1000)
 
     plt.figure(figsize=(10, 4))
     plt.subplot(121)
-    plt.imshow(np.abs(sky_uv), extent=[-max_u, max_u, -max_v, max_v])
-    plt.xlabel(r"$u\times\lambda$ [m]")
-    plt.ylabel(r"$v\times\lambda$ [m]")
+    plt.imshow(np.abs(sky_uv/1000), extent=[-max_u, max_u, -max_v, max_v])
+    plt.xlabel(r"$u(k\lambda$)")
+    plt.ylabel(r"$v(k\lambda$)")
     plt.title("Amplitude")
     plt.subplot(122)
-    plt.imshow(np.angle(sky_uv), extent=[-max_u, max_u, -max_v, max_v])
-    plt.xlabel(r"$u\times\lambda$ [m]")
-    plt.ylabel(r"$v\times\lambda$ [m]")
+    plt.imshow(np.angle(sky_uv/1000), extent=[-max_u, max_u, -max_v, max_v])
+    plt.xlabel(r"$u(k\lambda$)")
+    plt.ylabel(r"$v(k\lambda$)")
     plt.title("Phase")
     plt.show()
 
