@@ -211,3 +211,82 @@ def plot_sampled_sky(sky_uv):
     plt.imshow(np.abs(sky_uv) + 1e-3, norm=matplotlib.colors.LogNorm())
     plt.colorbar()
     plt.show()
+
+
+def plot_uv_hist(uv_points, bins=20, output_folder=None):
+    """Plot uv histogram.
+
+    Function to plot the histogram of the uv-sampling distribution.
+
+    Parameters
+    ----------
+    uv_points : np.ndarray
+        The visibilities baselines in uv-space.
+    bins : int
+        The number of bins for the histogram.
+    output_folder : str
+        The output folder to save the plot.
+
+    Returns
+    -------
+    np.ndarray
+        The histogram of the uv-sampling distribution.
+    """
+    cmap = matplotlib.colormaps["bone"]
+
+    fig, ax = plt.subplots(1, 2, figsize=(11, 4))
+
+    D = np.sqrt(np.sum(uv_points[:, :2] ** 2, axis=1))
+    baseline_hist = ax[0].hist(D, range=(0, np.max(D) * 1.1), bins=bins)
+
+    n = baseline_hist[0]
+    patches = baseline_hist[2]
+    col = (n - n.min()) / (n.max() - n.min())
+    for c, p in zip(col, patches):
+        plt.setp(p, "facecolor", cmap(c))
+    ax[0].set_title("Baseline histogram")
+    ax[0].set_xlabel(r"UV distance $(\lambda)$")
+    ax[0].set_ylabel("Counts")
+    ax[0].set_facecolor("black")
+    ax[0].set_box_aspect(1)
+
+    counts = np.flip(baseline_hist[0])
+    r_list = baseline_hist[1]
+
+    colors = cmap((counts / max(counts)))
+
+    draw_back = plt.Circle((0.0, 0.0), 10 * r_list[-1], color="black", fill=True)
+    ax[1].add_artist(draw_back)
+    for color, r in zip(colors, np.flip(r_list[1:])):
+        draw1 = plt.Circle((0.0, 0.0), r, color=color, fill=True)
+        ax[1].add_artist(draw1)
+
+    ax[1].scatter(uv_points[:, 0], uv_points[:, 1], color="yellow", s=1, alpha=0.3)
+
+    fig.colorbar(
+        plt.cm.ScalarMappable(
+            cmap=cmap, norm=matplotlib.colors.Normalize(vmin=0, vmax=max(counts))
+        ),
+        ax=ax[1],
+        orientation="vertical",
+        label="Counts",
+    )
+    ax[1].set_aspect("equal")
+    ax[1].set_xlim(-r_list[-1] * 1.1, r_list[-1] * 1.1)
+    ax[1].set_ylim(-r_list[-1] * 1.1, r_list[-1] * 1.1)
+    ax[1].set_title("Radial distribution")
+    ax[1].set_xlabel(r"u $(\lambda)$")
+    ax[1].set_ylabel(r"v $(\lambda)$")
+
+    plt.suptitle(
+        "UV sampling distribution",
+        horizontalalignment="center",
+        verticalalignment="top",
+    )
+
+    if output_folder is not None:
+        plt.savefig(output_folder + "uv_hist.pdf")
+    else:
+        plt.show()
+
+    return baseline_hist
