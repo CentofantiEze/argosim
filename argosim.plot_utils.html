@@ -314,6 +314,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.plot_utils.plot_sampled_sky"><code class="docutils literal notranslate"><span class="pre">plot_sampled_sky()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.plot_utils.plot_sky"><code class="docutils literal notranslate"><span class="pre">plot_sky()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.plot_utils.plot_sky_uv"><code class="docutils literal notranslate"><span class="pre">plot_sky_uv()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.plot_utils.plot_uv_hist"><code class="docutils literal notranslate"><span class="pre">plot_uv_hist()</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -357,17 +358,16 @@ uv-coverage and sky models.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="argosim.plot_utils.plot_baselines">
-<span class="sig-prename descclassname"><span class="pre">argosim.plot_utils.</span></span><span class="sig-name descname"><span class="pre">plot_baselines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visibilities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ENU</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/plot_utils.html#plot_baselines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.plot_utils.plot_baselines" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">argosim.plot_utils.</span></span><span class="sig-name descname"><span class="pre">plot_baselines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baselines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ENU</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/plot_utils.html#plot_baselines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.plot_utils.plot_baselines" title="Link to this definition">#</a></dt>
 <dd><p>Plot baselines.</p>
 <p>Function to plot the baselines in uv-space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>visibilities</strong> (<em>np.ndarray</em>) – The visibilities baselines in uv-space.</p></li>
+<li><p><strong>baselines</strong> (<em>np.ndarray</em>) – The uv-space sampling positions.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The axis to plot the baselines. For plotting on a specific subplot axis.</p></li>
 <li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The figure to plot the baselines. For plotting on a specific subplot axis.</p></li>
 <li><p><strong>ENU</strong> (<em>bool</em>) – If True, plot the baselines in East-North-Up coordinates. Otherwise, plot in uv-space.</p></li>
-<li><p><strong>title</strong> (<em>str</em>) – The title of the plot.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -444,6 +444,28 @@ uv-coverage and sky models.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="argosim.plot_utils.plot_uv_hist">
+<span class="sig-prename descclassname"><span class="pre">argosim.plot_utils.</span></span><span class="sig-name descname"><span class="pre">plot_uv_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baselines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/plot_utils.html#plot_uv_hist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.plot_utils.plot_uv_hist" title="Link to this definition">#</a></dt>
+<dd><p>Plot uv histogram.</p>
+<p>Function to plot the histogram of the uv-sampling distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>baselines</strong> (<em>np.ndarray</em>) – The uv-space sampling positions.</p></li>
+<li><p><strong>bins</strong> (<em>int</em>) – The number of bins for the histogram.</p></li>
+<li><p><strong>output_folder</strong> (<em>str</em>) – The output folder to save the plot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The histogram of the uv-sampling distribution.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -489,6 +511,7 @@ uv-coverage and sky models.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.plot_utils.plot_sampled_sky"><code class="docutils literal notranslate"><span class="pre">plot_sampled_sky()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.plot_utils.plot_sky"><code class="docutils literal notranslate"><span class="pre">plot_sky()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.plot_utils.plot_sky_uv"><code class="docutils literal notranslate"><span class="pre">plot_sky_uv()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.plot_utils.plot_uv_hist"><code class="docutils literal notranslate"><span class="pre">plot_uv_hist()</span></code></a></li>
 </ul>
   </nav></div>
 
