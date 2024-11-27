@@ -123,9 +123,11 @@ def plot_baselines(visibilities, ax=None, fig=None, ENU=False):
         ax.set_xlabel(r"u(k$\lambda$)")
         ax.set_ylabel(r"v(k$\lambda$)")
         ax.set_title(r"uv-plane")
-        ax.scatter(visibilities[:, 0]/1000, visibilities[:, 1]/1000, s=0.4, c="gray")
-        ax.set_xlim([np.min(visibilities)/1000, np.max(visibilities)/1000])
-        ax.set_ylim([np.min(visibilities)/1000, np.max(visibilities)/1000])
+        ax.scatter(
+            visibilities[:, 0] / 1000, visibilities[:, 1] / 1000, s=0.4, c="gray"
+        )
+        ax.set_xlim([np.min(visibilities) / 1000, np.max(visibilities) / 1000])
+        ax.set_ylim([np.min(visibilities) / 1000, np.max(visibilities) / 1000])
     ax.set_aspect("equal", adjustable="box")
     if ax == None or fig == None:
         plt.show()
@@ -175,17 +177,17 @@ def plot_sky_uv(sky_uv, fov_size):
     -------
     None
     """
-    max_u = ((180 / np.pi) * sky_uv.shape[0] / (2 * fov_size[0])/1000)
-    max_v = ((180 / np.pi) * sky_uv.shape[1] / (2 * fov_size[1])/1000)
+    max_u = (180 / np.pi) * sky_uv.shape[0] / (2 * fov_size[0]) / 1000
+    max_v = (180 / np.pi) * sky_uv.shape[1] / (2 * fov_size[1]) / 1000
 
     plt.figure(figsize=(10, 4))
     plt.subplot(121)
-    plt.imshow(np.abs(sky_uv/1000), extent=[-max_u, max_u, -max_v, max_v])
+    plt.imshow(np.abs(sky_uv / 1000), extent=[-max_u, max_u, -max_v, max_v])
     plt.xlabel(r"$u(k\lambda$)")
     plt.ylabel(r"$v(k\lambda$)")
     plt.title("Amplitude")
     plt.subplot(122)
-    plt.imshow(np.angle(sky_uv/1000), extent=[-max_u, max_u, -max_v, max_v])
+    plt.imshow(np.angle(sky_uv / 1000), extent=[-max_u, max_u, -max_v, max_v])
     plt.xlabel(r"$u(k\lambda$)")
     plt.ylabel(r"$v(k\lambda$)")
     plt.title("Phase")
