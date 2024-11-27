@@ -118,9 +118,7 @@ def plot_baselines(baselines, ax=None, fig=None, ENU=False):
         ax.set_xlabel(r"u(k$\lambda$)")
         ax.set_ylabel(r"v(k$\lambda$)")
         ax.set_title(r"uv-plane")
-        ax.scatter(
-            baselines[:, 0] / 1000, baselines[:, 1] / 1000, s=0.4, c="gray"
-        )
+        ax.scatter(baselines[:, 0] / 1000, baselines[:, 1] / 1000, s=0.4, c="gray")
         ax.set_xlim([np.min(baselines) / 1000, np.max(baselines) / 1000])
         ax.set_ylim([np.min(baselines) / 1000, np.max(baselines) / 1000])
     ax.set_aspect("equal", adjustable="box")
