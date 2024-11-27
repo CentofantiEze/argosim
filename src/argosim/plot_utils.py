@@ -240,10 +240,10 @@ def plot_uv_hist(baselines, bins=20, output_folder=None):
     col = (n - n.min()) / (n.max() - n.min())
     for c, p in zip(col, patches):
         plt.setp(p, "facecolor", cmap(c))
-    ax[0].set_title("Baseline histogram")
-    ax[0].set_xlabel(r"UV distance $k(\lambda)$")
+    ax[0].set_title("Baselines histogram")
+    ax[0].set_xlabel(r"UV distance $(k\lambda)$")
     ax[0].set_ylabel("Counts")
-    ax[0].set_facecolor("black")
+    ax[0].set_facecolor("palegoldenrod")
     ax[0].set_box_aspect(1)
 
     counts = np.flip(baseline_hist[0])
