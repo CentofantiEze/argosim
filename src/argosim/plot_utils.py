@@ -225,6 +225,9 @@ def plot_uv_hist(baselines, bins=20, output_folder=None):
     np.ndarray
         The histogram of the uv-sampling distribution.
     """
+    # scale to kilo-lambda
+    baselines = baselines / 1000
+
     cmap = matplotlib.colormaps["bone"]
 
     fig, ax = plt.subplots(1, 2, figsize=(11, 4))
@@ -238,7 +241,7 @@ def plot_uv_hist(baselines, bins=20, output_folder=None):
     for c, p in zip(col, patches):
         plt.setp(p, "facecolor", cmap(c))
     ax[0].set_title("Baseline histogram")
-    ax[0].set_xlabel(r"UV distance $(\lambda)$")
+    ax[0].set_xlabel(r"UV distance $k(\lambda)$")
     ax[0].set_ylabel("Counts")
     ax[0].set_facecolor("black")
     ax[0].set_box_aspect(1)
@@ -268,8 +271,8 @@ def plot_uv_hist(baselines, bins=20, output_folder=None):
     ax[1].set_xlim(-r_list[-1] * 1.1, r_list[-1] * 1.1)
     ax[1].set_ylim(-r_list[-1] * 1.1, r_list[-1] * 1.1)
     ax[1].set_title("Radial distribution")
-    ax[1].set_xlabel(r"u $(\lambda)$")
-    ax[1].set_ylabel(r"v $(\lambda)$")
+    ax[1].set_xlabel(r"u $(k\lambda)$")
+    ax[1].set_ylabel(r"v $(k\lambda)$")
 
     plt.suptitle(
         "UV sampling distribution",
