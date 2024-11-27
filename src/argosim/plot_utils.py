@@ -85,23 +85,21 @@ def plot_antenna_arr(array, ax=None, fig=None, title="Array"):
         plt.show()
 
 
-def plot_baselines(visibilities, ax=None, fig=None, ENU=False):
+def plot_baselines(baselines, ax=None, fig=None, ENU=False):
     """Plot baselines.
 
     Function to plot the baselines in uv-space.
 
     Parameters
     ----------
-    visibilities : np.ndarray
-        The visibilities baselines in uv-space.
+    baselines : np.ndarray
+        The uv-space sampling positions.
     ax : matplotlib.axes.Axes
         The axis to plot the baselines. For plotting on a specific subplot axis.
     fig : matplotlib.figure.Figure
         The figure to plot the baselines. For plotting on a specific subplot axis.
     ENU : bool
         If True, plot the baselines in East-North-Up coordinates. Otherwise, plot in uv-space.
-    title : str
-        The title of the plot.
 
     Returns
     -------
@@ -109,25 +107,20 @@ def plot_baselines(visibilities, ax=None, fig=None, ENU=False):
     """
     if ax == None or fig == None:
         fig, ax = plt.subplots(1, 1)
-    # if n_baselines is not None:
-    #     delta = int(visibilities.shape[0]/2)
-    #     ax.scatter(visibilities[delta:delta+n_baselines,0], visibilities[delta:delta+n_baselines,1], s=2,c='k')
     if ENU:
         ax.set_xlabel("East [m]")
         ax.set_ylabel("North [m]")
         ax.set_title("Baselines")
-        ax.scatter(visibilities[:, 0], visibilities[:, 1], s=0.4, c="gray")
-        ax.set_xlim([np.min(visibilities), np.max(visibilities)])
-        ax.set_ylim([np.min(visibilities), np.max(visibilities)])
+        ax.scatter(baselines[:, 0], baselines[:, 1], s=0.4, c="gray")
+        ax.set_xlim([np.min(baselines), np.max(baselines)])
+        ax.set_ylim([np.min(baselines), np.max(baselines)])
     else:
         ax.set_xlabel(r"u(k$\lambda$)")
         ax.set_ylabel(r"v(k$\lambda$)")
         ax.set_title(r"uv-plane")
-        ax.scatter(
-            visibilities[:, 0] / 1000, visibilities[:, 1] / 1000, s=0.4, c="gray"
-        )
-        ax.set_xlim([np.min(visibilities) / 1000, np.max(visibilities) / 1000])
-        ax.set_ylim([np.min(visibilities) / 1000, np.max(visibilities) / 1000])
+        ax.scatter(baselines[:, 0] / 1000, baselines[:, 1] / 1000, s=0.4, c="gray")
+        ax.set_xlim([np.min(baselines) / 1000, np.max(baselines) / 1000])
+        ax.set_ylim([np.min(baselines) / 1000, np.max(baselines) / 1000])
     ax.set_aspect("equal", adjustable="box")
     if ax == None or fig == None:
         plt.show()
@@ -211,3 +204,85 @@ def plot_sampled_sky(sky_uv):
     plt.imshow(np.abs(sky_uv) + 1e-3, norm=matplotlib.colors.LogNorm())
     plt.colorbar()
     plt.show()
+
+
+def plot_uv_hist(baselines, bins=20, output_folder=None):
+    """Plot uv histogram.
+
+    Function to plot the histogram of the uv-sampling distribution.
+
+    Parameters
+    ----------
+    baselines : np.ndarray
+        The uv-space sampling positions.
+    bins : int
+        The number of bins for the histogram.
+    output_folder : str
+        The output folder to save the plot.
+
+    Returns
+    -------
+    np.ndarray
+        The histogram of the uv-sampling distribution.
+    """
+    # scale to kilo-lambda
+    baselines = baselines / 1000
+
+    cmap = matplotlib.colormaps["bone"]
+
+    fig, ax = plt.subplots(1, 2, figsize=(11, 4))
+
+    D = np.sqrt(np.sum(baselines[:, :2] ** 2, axis=1))
+    baseline_hist = ax[0].hist(D, range=(0, np.max(D) * 1.1), bins=bins)
+
+    n = baseline_hist[0]
+    patches = baseline_hist[2]
+    col = (n - n.min()) / (n.max() - n.min())
+    for c, p in zip(col, patches):
+        plt.setp(p, "facecolor", cmap(c))
+    ax[0].set_title("Baselines histogram")
+    ax[0].set_xlabel(r"UV distance $(k\lambda)$")
+    ax[0].set_ylabel("Counts")
+    ax[0].set_facecolor("palegoldenrod")
+    ax[0].set_box_aspect(1)
+
+    counts = np.flip(baseline_hist[0])
+    r_list = baseline_hist[1]
+
+    colors = cmap((counts / max(counts)))
+
+    draw_back = plt.Circle((0.0, 0.0), 10 * r_list[-1], color="black", fill=True)
+    ax[1].add_artist(draw_back)
+    for color, r in zip(colors, np.flip(r_list[1:])):
+        draw1 = plt.Circle((0.0, 0.0), r, color=color, fill=True)
+        ax[1].add_artist(draw1)
+
+    ax[1].scatter(baselines[:, 0], baselines[:, 1], color="yellow", s=1, alpha=0.3)
+
+    fig.colorbar(
+        plt.cm.ScalarMappable(
+            cmap=cmap, norm=matplotlib.colors.Normalize(vmin=0, vmax=max(counts))
+        ),
+        ax=ax[1],
+        orientation="vertical",
+        label="Counts",
+    )
+    ax[1].set_aspect("equal")
+    ax[1].set_xlim(-r_list[-1] * 1.1, r_list[-1] * 1.1)
+    ax[1].set_ylim(-r_list[-1] * 1.1, r_list[-1] * 1.1)
+    ax[1].set_title("Radial distribution")
+    ax[1].set_xlabel(r"u $(k\lambda)$")
+    ax[1].set_ylabel(r"v $(k\lambda)$")
+
+    plt.suptitle(
+        "UV sampling distribution",
+        horizontalalignment="center",
+        verticalalignment="top",
+    )
+
+    if output_folder is not None:
+        plt.savefig(output_folder + "uv_hist.pdf")
+    else:
+        plt.show()
+
+    return baseline_hist
