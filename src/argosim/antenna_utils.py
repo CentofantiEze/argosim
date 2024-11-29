@@ -7,11 +7,8 @@ perform aperture synthesis, obtain uv-coverage and get observations from sky mod
 
 """
 
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 import numpy.random as rnd
-from PIL import Image
 
 ########################################
 #      Generate antenna positions      #

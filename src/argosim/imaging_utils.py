@@ -6,11 +6,9 @@ This module contains functions to perform radio interferometric imaging.
 
 """
 
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 import numpy.random as rnd
-from PIL import Image
+# from PIL import Image
 
 ########################################
 #           Grid uv samples            #
@@ -81,22 +79,22 @@ from PIL import Image
 #     return np.abs(np.fft.ifft2(uv_mask))
 
 
-def load_sky_model(path):
-    """Load sky model.
+# def load_sky_model(path):
+#     """Load sky model.
 
-    Function to load a sky model image.
+#     Function to load a sky model image.
 
-    Parameters
-    ----------
-    path : str
-        The path to the sky model image.
+#     Parameters
+#     ----------
+#     path : str
+#         The path to the sky model image.
 
-    Returns
-    -------
-    sky : np.ndarray
-        The sky model image.
-    """
-    return np.array(Image.open(path).convert("L"))
+#     Returns
+#     -------
+#     sky : np.ndarray
+#         The sky model image.
+#     """
+#     return np.array(Image.open(path).convert("L"))
 
 
 def sky2uv(sky):
