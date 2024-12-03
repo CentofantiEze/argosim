@@ -8,6 +8,7 @@ This module contains functions to perform radio interferometric imaging.
 
 import numpy as np
 import numpy.random as rnd
+
 # from PIL import Image
 
 ########################################
@@ -146,14 +147,23 @@ def grid_uv_samples(
     max_u = (180 / np.pi) * sky_uv_shape[0] / (2 * fov_size[0])
     max_v = (180 / np.pi) * sky_uv_shape[1] / (2 * fov_size[1])
     uv_samples_indices = (
-        np.rint(uv_samples[:, :2] / np.array([max_u, max_v]) * np.array(sky_uv_shape))
-        + np.array(sky_uv_shape) / 2
+        np.rint(
+            uv_samples[:, :2] / np.array([max_u, max_v]) / 2 * np.array(sky_uv_shape)
+        )
+        + np.array(sky_uv_shape) // 2
     )
 
     if any(np.array(sky_uv_shape) <= np.max(uv_samples_indices, axis=0)):
         raise ValueError(
             "uv samples are out of the uv-plane range. Required Npix > {}".format(
-                np.max(uv_samples_indices, axis=0)
+                # np.max(uv_samples_indices, axis=0)
+                np.ceil(
+                    np.max(np.abs(uv_samples[:, :2]), axis=0)
+                    * 2
+                    * np.pi
+                    * fov_size
+                    / 180
+                )
             )
         )
 
