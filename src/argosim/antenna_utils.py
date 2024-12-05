@@ -4,18 +4,20 @@ This module contains functions to generate antenna arrays, compute its baselines
 perform aperture synthesis, obtain uv-coverage and get observations from sky models.
 
 :Authors: Ezequiel Centofanti <ezequiel.centofanti@cea.fr>
+          Samuel Gullin <gullin@ia.forth.gr>
 
 """
 
 import numpy as np
 import numpy.random as rnd
+from argosim.rand_utils import local_seed
 
 ########################################
 #      Generate antenna positions      #
 ########################################
 
 
-def random_antenna_pos(E_lim=1000.0, N_lim=1000.0, U_lim=0.0):
+def random_antenna_pos(E_lim=1000.0, N_lim=1000.0, U_lim=0.0, seed=None):
     """Random antenna pos.
 
     Function to generate a random antenna location in ENU coordinates.
@@ -29,15 +31,21 @@ def random_antenna_pos(E_lim=1000.0, N_lim=1000.0, U_lim=0.0):
         The north coordinate span width of the antenna position in meters.
     U_lim : float
         The up coordinate span width of the antenna position in meters.
+    seed : int
+        Optional seed to set.
 
     Returns
     -------
     antenna_pos : np.ndarray
         The antenna position in ENU coordinates.
     """
+    
+    with local_seed(seed):
+        random_coords = rnd.random_sample(3)
+
     # Return (x,y) random location for single dish
     return (
-        rnd.random_sample(3) * np.array([E_lim, N_lim, U_lim])
+        random_coords * np.array([E_lim, N_lim, U_lim])
         - np.array([E_lim, N_lim, 0.0]) / 2
     )
 
@@ -108,7 +116,7 @@ def y_antenna_arr(n_antenna=5, r=500.0, alpha=0.0):
     ).reshape((3 * n_antenna, 3))
 
 
-def random_antenna_arr(n_antenna=3, E_lim=1000.0, N_lim=1000.0, U_lim=0.0):
+def random_antenna_arr(n_antenna=3, E_lim=1000.0, N_lim=1000.0, U_lim=0.0, seed=None):
     """Random antenna arr.
 
     Function to generate a random antenna array. Antennas lie randomly distributed
@@ -124,14 +132,22 @@ def random_antenna_arr(n_antenna=3, E_lim=1000.0, N_lim=1000.0, U_lim=0.0):
         The north coordinate span width of the antenna positions in meters.
     U_lim : float
         The up coordinate span width of the antenna positions in meters.
+    seed : int
+        Optional seed to set.
 
     Returns
     -------
     antenna_arr : np.ndarray
         The antenna array positions in ENU coordinates.
     """
-    # Return list of 'n' antenna locations (x_i, y_i) randomly distributed.
-    return np.array([random_antenna_pos(E_lim, N_lim, U_lim) for i in range(n_antenna)])
+
+    # Repeating the same seed will not give us random placements... 
+    # So we give the outer loop the random seed, and the inner no seed.
+    with local_seed(seed):
+        # Make a list of 'n' antenna locations (x_i, y_i) randomly distributed.
+        positions = [random_antenna_pos(E_lim, N_lim, U_lim) for i in range(n_antenna)]
+
+    return np.array(positions)
 
 
 def uni_antenna_array(

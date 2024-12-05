@@ -3,6 +3,7 @@
 This module contains functions to perform radio interferometric imaging. 
 
 :Authors: Ezequiel Centofanti <ezequiel.centofanti@cea.fr>
+          Samuel Gullin <gullin@ia.forth.gr>
 
 """
 
@@ -227,7 +228,7 @@ def compute_visibilities_grid(sky_uv, uv_mask):
     return sky_uv * uv_mask + 0 + 0.0j
 
 
-def add_noise_uv(vis, uv_mask, sigma=0.1):
+def add_noise_uv(vis, uv_mask, sigma=0.1, seed=None):
     """Add noise in uv-plane.
 
     Function to add white gaussian noise to the visibilities in the uv-plane.
@@ -240,14 +241,17 @@ def add_noise_uv(vis, uv_mask, sigma=0.1):
         The uv sampling mask.
     sigma : float
         The standard deviation of the noise.
+    seed : int
+        Optional seed to set.
 
     Returns
     -------
     vis : np.ndarray
         The visibilities with added noise.
     """
-    noise_sky = rnd.normal(0, sigma, vis.shape)
-    noise_uv = sky2uv(noise_sky)
+    with local_seed(seed):
+        noise_sky = rnd.normal(0, sigma, vis.shape)
+        noise_uv = sky2uv(noise_sky)
 
     return vis + compute_visibilities_grid(noise_uv, uv_mask)
 
