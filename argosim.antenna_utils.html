@@ -165,6 +165,7 @@
 <li class="toctree-l3"><a class="reference internal" href="argosim.data_utils.html">argosim.data_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="argosim.imaging_utils.html">argosim.imaging_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="argosim.plot_utils.html">argosim.plot_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="argosim.rand_utils.html">argosim.rand_utils module</a></li>
 </ul>
 </details></li>
 </ul>
@@ -338,7 +339,8 @@
 perform aperture synthesis, obtain uv-coverage and get observations from sky models.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Authors<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ezequiel Centofanti &lt;<a class="reference external" href="mailto:ezequiel&#46;centofanti&#37;&#52;&#48;cea&#46;fr">ezequiel<span>&#46;</span>centofanti<span>&#64;</span>cea<span>&#46;</span>fr</a>&gt;</p>
+<dd class="field-odd"><p>Ezequiel Centofanti &lt;<a class="reference external" href="mailto:ezequiel&#46;centofanti&#37;&#52;&#48;cea&#46;fr">ezequiel<span>&#46;</span>centofanti<span>&#64;</span>cea<span>&#46;</span>fr</a>&gt;
+Samuel Gullin &lt;<a class="reference external" href="mailto:gullin&#37;&#52;&#48;ia&#46;forth&#46;gr">gullin<span>&#64;</span>ia<span>&#46;</span>forth<span>&#46;</span>gr</a>&gt;</p>
 </dd>
 </dl>
 <dl class="py function">
@@ -473,7 +475,7 @@ of radius ‘r’ from the center [0,0] and are equally spaced.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="argosim.antenna_utils.random_antenna_arr">
-<span class="sig-prename descclassname"><span class="pre">argosim.antenna_utils.</span></span><span class="sig-name descname"><span class="pre">random_antenna_arr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_antenna</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/antenna_utils.html#random_antenna_arr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.antenna_utils.random_antenna_arr" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">argosim.antenna_utils.</span></span><span class="sig-name descname"><span class="pre">random_antenna_arr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_antenna</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/antenna_utils.html#random_antenna_arr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.antenna_utils.random_antenna_arr" title="Link to this definition">#</a></dt>
 <dd><p>Random antenna arr.</p>
 <p>Function to generate a random antenna array. Antennas lie randomly distributed
 in the range: [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].</p>
@@ -484,6 +486,7 @@ in the range: [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].</p>
 <li><p><strong>E_lim</strong> (<em>float</em>) – The east coordinate span width of the antenna positions in meters.</p></li>
 <li><p><strong>N_lim</strong> (<em>float</em>) – The north coordinate span width of the antenna positions in meters.</p></li>
 <li><p><strong>U_lim</strong> (<em>float</em>) – The up coordinate span width of the antenna positions in meters.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Optional seed to set.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -497,7 +500,7 @@ in the range: [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="argosim.antenna_utils.random_antenna_pos">
-<span class="sig-prename descclassname"><span class="pre">argosim.antenna_utils.</span></span><span class="sig-name descname"><span class="pre">random_antenna_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/antenna_utils.html#random_antenna_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.antenna_utils.random_antenna_pos" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">argosim.antenna_utils.</span></span><span class="sig-name descname"><span class="pre">random_antenna_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/antenna_utils.html#random_antenna_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.antenna_utils.random_antenna_pos" title="Link to this definition">#</a></dt>
 <dd><p>Random antenna pos.</p>
 <p>Function to generate a random antenna location in ENU coordinates.
 Antenna lies in the range: [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lims].</p>
@@ -507,6 +510,7 @@ Antenna lies in the range: [-E_lims/2, E_lims/2]x[-N_lims/2, N_lims/2]x[0, U_lim
 <li><p><strong>E_lim</strong> (<em>float</em>) – The east coordinate span width of the antenna position in meters.</p></li>
 <li><p><strong>N_lim</strong> (<em>float</em>) – The north coordinate span width of the antenna position in meters.</p></li>
 <li><p><strong>U_lim</strong> (<em>float</em>) – The up coordinate span width of the antenna position in meters.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Optional seed to set.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

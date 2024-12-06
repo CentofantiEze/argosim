@@ -164,6 +164,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.data_utils.html">argosim.data_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.imaging_utils.html">argosim.imaging_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.plot_utils.html">argosim.plot_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../argosim.rand_utils.html">argosim.rand_utils module</a></li>
 </ul>
 </details></li>
 </ul>
@@ -268,10 +269,13 @@
 <span class="sd">This module contains functions to generate synthetic observations for the Argosim project.</span>
 
 <span class="sd">:Authors: Ezequiel Centofanti &lt;ezequiel.centofanti@cea.fr&gt;</span>
+<span class="sd">          Samuel Gullin &lt;gullin@ia.forth.gr&gt;</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">argosim.rand_utils</span> <span class="kn">import</span> <span class="n">local_seed</span>
 
 
 <div class="viewcode-block" id="gauss_source">
@@ -316,7 +320,7 @@
 
 <div class="viewcode-block" id="sigma2d">
 <a class="viewcode-back" href="../../argosim.data_utils.html#argosim.data_utils.sigma2d">[docs]</a>
-<span class="k">def</span> <span class="nf">sigma2d</span><span class="p">(</span><span class="n">min_var</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cov_lim</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">sigma2d</span><span class="p">(</span><span class="n">min_var</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cov_lim</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sigma 2D.</span>
 
 <span class="sd">    Function to generate a random 2D covariance matrix.</span>
@@ -327,40 +331,50 @@
 <span class="sd">        The minimum variance of both gaussian components.</span>
 <span class="sd">    cov_lim : float</span>
 <span class="sd">        The limit of the covariance between gaussian components.</span>
+<span class="sd">    seed : int</span>
+<span class="sd">        Optional seed to set.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    sigma : np.ndarray</span>
 <span class="sd">        The 2D covariance matrix.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">var_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">+</span> <span class="n">min_var</span>
-    <span class="c1"># Limit eccentricity</span>
-    <span class="n">var_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">+</span> <span class="n">min_var</span>
-    <span class="c1"># Cov &lt;= sqrt(var1 x var2)</span>
-    <span class="n">cov12</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_1</span> <span class="o">*</span> <span class="n">var_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">cov_lim</span>
+    <span class="k">with</span> <span class="n">local_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
+        <span class="n">var_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">+</span> <span class="n">min_var</span>
+        <span class="c1"># Limit eccentricity</span>
+        <span class="n">var_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">+</span> <span class="n">min_var</span>
+        <span class="c1"># Cov &lt;= sqrt(var1 x var2)</span>
+        <span class="n">cov12</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_1</span> <span class="o">*</span> <span class="n">var_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">cov_lim</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">var_1</span><span class="p">,</span> <span class="n">cov12</span><span class="p">],</span> <span class="p">[</span><span class="n">cov12</span><span class="p">,</span> <span class="n">var_2</span><span class="p">]])</span></div>
 
 
 
 <div class="viewcode-block" id="mu2d">
 <a class="viewcode-back" href="../../argosim.data_utils.html#argosim.data_utils.mu2d">[docs]</a>
-<span class="k">def</span> <span class="nf">mu2d</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">mu2d</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Mu 2D.</span>
 
 <span class="sd">    Function to generate a random 2D mean vector in the range [-1,1]x[-1,1].</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    seed : int</span>
+<span class="sd">        Optional seed to set</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    mu : np.ndarray</span>
 <span class="sd">        The 2D mean vector.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span></div>
+    <span class="k">with</span> <span class="n">local_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">mu</span></div>
 
 
 
 <div class="viewcode-block" id="random_source">
 <a class="viewcode-back" href="../../argosim.data_utils.html#argosim.data_utils.random_source">[docs]</a>
-<span class="k">def</span> <span class="nf">random_source</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">pix_size</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">random_source</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">pix_size</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Random source.</span>
 
 <span class="sd">    Function to generate 2D Gaussian source with random mean and covariance.</span>
@@ -371,21 +385,24 @@
 <span class="sd">        The output image shape.</span>
 <span class="sd">    pix_size : float</span>
 <span class="sd">        The size in pixels of the Gaussian source.</span>
+<span class="sd">    seed : int</span>
+<span class="sd">        Optional seed to set</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    source : np.ndarray</span>
 <span class="sd">        Image of size (nx,ny) containing the 2D Gaussian source.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">mu</span> <span class="o">=</span> <span class="n">mu2d</span><span class="p">()</span>
-    <span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma2d</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">local_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">mu2d</span><span class="p">()</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma2d</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">gauss_source</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">pix_size</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="n_source_sky">
 <a class="viewcode-back" href="../../argosim.data_utils.html#argosim.data_utils.n_source_sky">[docs]</a>
-<span class="k">def</span> <span class="nf">n_source_sky</span><span class="p">(</span><span class="n">shape_px</span><span class="p">,</span> <span class="n">pix_size_list</span><span class="p">,</span> <span class="n">source_intensity_list</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">n_source_sky</span><span class="p">(</span><span class="n">shape_px</span><span class="p">,</span> <span class="n">pix_size_list</span><span class="p">,</span> <span class="n">source_intensity_list</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;N source sky.</span>
 
 <span class="sd">    Function to generate a sky image with multiple Gaussian sources at random positions.</span>
@@ -399,18 +416,20 @@
 <span class="sd">    source_intensity_list : list</span>
 <span class="sd">        The intensity of each Gaussian source in the final image.</span>
 <span class="sd">        The sum of all the sources should be equal to 1 to have a normalized image.</span>
+<span class="sd">    seed : int</span>
+<span class="sd">        Optional seed to set</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    sky : np.ndarray</span>
 <span class="sd">        Image of size (nx,ny) containing the sky model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span>
-        <span class="p">[</span>
+    <span class="k">with</span> <span class="n">local_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
+        <span class="n">source_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">random_source</span><span class="p">((</span><span class="n">shape_px</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape_px</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">pix_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">intensity</span>
             <span class="k">for</span> <span class="n">pix_size</span><span class="p">,</span> <span class="n">intensity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pix_size_list</span><span class="p">,</span> <span class="n">source_intensity_list</span><span class="p">)</span>
         <span class="p">]</span>
-    <span class="p">)</span></div>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">source_list</span><span class="p">)</span></div>
 
 </pre></div>
 

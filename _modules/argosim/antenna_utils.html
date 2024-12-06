@@ -164,6 +164,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.data_utils.html">argosim.data_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.imaging_utils.html">argosim.imaging_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.plot_utils.html">argosim.plot_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../argosim.rand_utils.html">argosim.rand_utils module</a></li>
 </ul>
 </details></li>
 </ul>
@@ -269,11 +270,14 @@
 <span class="sd">perform aperture synthesis, obtain uv-coverage and get observations from sky models.</span>
 
 <span class="sd">:Authors: Ezequiel Centofanti &lt;ezequiel.centofanti@cea.fr&gt;</span>
+<span class="sd">          Samuel Gullin &lt;gullin@ia.forth.gr&gt;</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">rnd</span>
+
+<span class="kn">from</span> <span class="nn">argosim.rand_utils</span> <span class="kn">import</span> <span class="n">local_seed</span>
 
 <span class="c1">########################################</span>
 <span class="c1">#      Generate antenna positions      #</span>
@@ -282,7 +286,7 @@
 
 <div class="viewcode-block" id="random_antenna_pos">
 <a class="viewcode-back" href="../../argosim.antenna_utils.html#argosim.antenna_utils.random_antenna_pos">[docs]</a>
-<span class="k">def</span> <span class="nf">random_antenna_pos</span><span class="p">(</span><span class="n">E_lim</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">N_lim</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">U_lim</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">random_antenna_pos</span><span class="p">(</span><span class="n">E_lim</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">N_lim</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">U_lim</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Random antenna pos.</span>
 
 <span class="sd">    Function to generate a random antenna location in ENU coordinates.</span>
@@ -296,15 +300,20 @@
 <span class="sd">        The north coordinate span width of the antenna position in meters.</span>
 <span class="sd">    U_lim : float</span>
 <span class="sd">        The up coordinate span width of the antenna position in meters.</span>
+<span class="sd">    seed : int</span>
+<span class="sd">        Optional seed to set.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    antenna_pos : np.ndarray</span>
 <span class="sd">        The antenna position in ENU coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">local_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
+        <span class="n">random_coords</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
     <span class="c1"># Return (x,y) random location for single dish</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="n">rnd</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">E_lim</span><span class="p">,</span> <span class="n">N_lim</span><span class="p">,</span> <span class="n">U_lim</span><span class="p">])</span>
+        <span class="n">random_coords</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">E_lim</span><span class="p">,</span> <span class="n">N_lim</span><span class="p">,</span> <span class="n">U_lim</span><span class="p">])</span>
         <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">E_lim</span><span class="p">,</span> <span class="n">N_lim</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="p">)</span></div>
 
@@ -384,7 +393,7 @@
 
 <div class="viewcode-block" id="random_antenna_arr">
 <a class="viewcode-back" href="../../argosim.antenna_utils.html#argosim.antenna_utils.random_antenna_arr">[docs]</a>
-<span class="k">def</span> <span class="nf">random_antenna_arr</span><span class="p">(</span><span class="n">n_antenna</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">E_lim</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">N_lim</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">U_lim</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">random_antenna_arr</span><span class="p">(</span><span class="n">n_antenna</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">E_lim</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">N_lim</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">U_lim</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Random antenna arr.</span>
 
 <span class="sd">    Function to generate a random antenna array. Antennas lie randomly distributed</span>
@@ -400,14 +409,19 @@
 <span class="sd">        The north coordinate span width of the antenna positions in meters.</span>
 <span class="sd">    U_lim : float</span>
 <span class="sd">        The up coordinate span width of the antenna positions in meters.</span>
+<span class="sd">    seed : int</span>
+<span class="sd">        Optional seed to set.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    antenna_arr : np.ndarray</span>
 <span class="sd">        The antenna array positions in ENU coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Return list of &#39;n&#39; antenna locations (x_i, y_i) randomly distributed.</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">random_antenna_pos</span><span class="p">(</span><span class="n">E_lim</span><span class="p">,</span> <span class="n">N_lim</span><span class="p">,</span> <span class="n">U_lim</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_antenna</span><span class="p">)])</span></div>
+    <span class="k">with</span> <span class="n">local_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
+        <span class="c1"># Make a list of &#39;n&#39; antenna locations (x_i, y_i) randomly distributed.</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">random_antenna_pos</span><span class="p">(</span><span class="n">E_lim</span><span class="p">,</span> <span class="n">N_lim</span><span class="p">,</span> <span class="n">U_lim</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_antenna</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span></div>
 
 
 

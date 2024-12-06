@@ -165,6 +165,7 @@
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">argosim.data_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="argosim.imaging_utils.html">argosim.imaging_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="argosim.plot_utils.html">argosim.plot_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="argosim.rand_utils.html">argosim.rand_utils module</a></li>
 </ul>
 </details></li>
 </ul>
@@ -331,7 +332,8 @@
 <p>This module contains functions to generate synthetic observations for the Argosim project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Authors<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ezequiel Centofanti &lt;<a class="reference external" href="mailto:ezequiel&#46;centofanti&#37;&#52;&#48;cea&#46;fr">ezequiel<span>&#46;</span>centofanti<span>&#64;</span>cea<span>&#46;</span>fr</a>&gt;</p>
+<dd class="field-odd"><p>Ezequiel Centofanti &lt;<a class="reference external" href="mailto:ezequiel&#46;centofanti&#37;&#52;&#48;cea&#46;fr">ezequiel<span>&#46;</span>centofanti<span>&#64;</span>cea<span>&#46;</span>fr</a>&gt;
+Samuel Gullin &lt;<a class="reference external" href="mailto:gullin&#37;&#52;&#48;ia&#46;forth&#46;gr">gullin<span>&#64;</span>ia<span>&#46;</span>forth<span>&#46;</span>gr</a>&gt;</p>
 </dd>
 </dl>
 <dl class="py function">
@@ -360,22 +362,25 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="argosim.data_utils.mu2d">
-<span class="sig-prename descclassname"><span class="pre">argosim.data_utils.</span></span><span class="sig-name descname"><span class="pre">mu2d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/data_utils.html#mu2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.data_utils.mu2d" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">argosim.data_utils.</span></span><span class="sig-name descname"><span class="pre">mu2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/data_utils.html#mu2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.data_utils.mu2d" title="Link to this definition">#</a></dt>
 <dd><p>Mu 2D.</p>
 <p>Function to generate a random 2D mean vector in the range [-1,1]x[-1,1].</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mu</strong> – The 2D mean vector.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seed</strong> (<em>int</em>) – Optional seed to set</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>np.ndarray</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>mu</strong> – The 2D mean vector.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="argosim.data_utils.n_source_sky">
-<span class="sig-prename descclassname"><span class="pre">argosim.data_utils.</span></span><span class="sig-name descname"><span class="pre">n_source_sky</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape_px</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_size_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_intensity_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/data_utils.html#n_source_sky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.data_utils.n_source_sky" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">argosim.data_utils.</span></span><span class="sig-name descname"><span class="pre">n_source_sky</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape_px</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_size_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_intensity_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/data_utils.html#n_source_sky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.data_utils.n_source_sky" title="Link to this definition">#</a></dt>
 <dd><p>N source sky.</p>
 <p>Function to generate a sky image with multiple Gaussian sources at random positions.</p>
 <dl class="field-list simple">
@@ -385,6 +390,7 @@
 <li><p><strong>pix_size_list</strong> (<em>list</em>) – The size in pixels of the Gaussian sources.</p></li>
 <li><p><strong>source_intensity_list</strong> (<em>list</em>) – The intensity of each Gaussian source in the final image.
 The sum of all the sources should be equal to 1 to have a normalized image.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Optional seed to set</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -398,7 +404,7 @@ The sum of all the sources should be equal to 1 to have a normalized image.</p><
 
 <dl class="py function">
 <dt class="sig sig-object py" id="argosim.data_utils.random_source">
-<span class="sig-prename descclassname"><span class="pre">argosim.data_utils.</span></span><span class="sig-name descname"><span class="pre">random_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/data_utils.html#random_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.data_utils.random_source" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">argosim.data_utils.</span></span><span class="sig-name descname"><span class="pre">random_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/data_utils.html#random_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.data_utils.random_source" title="Link to this definition">#</a></dt>
 <dd><p>Random source.</p>
 <p>Function to generate 2D Gaussian source with random mean and covariance.</p>
 <dl class="field-list simple">
@@ -406,6 +412,7 @@ The sum of all the sources should be equal to 1 to have a normalized image.</p><
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>shape</strong> (<em>tuple</em>) – The output image shape.</p></li>
 <li><p><strong>pix_size</strong> (<em>float</em>) – The size in pixels of the Gaussian source.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Optional seed to set</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -419,7 +426,7 @@ The sum of all the sources should be equal to 1 to have a normalized image.</p><
 
 <dl class="py function">
 <dt class="sig sig-object py" id="argosim.data_utils.sigma2d">
-<span class="sig-prename descclassname"><span class="pre">argosim.data_utils.</span></span><span class="sig-name descname"><span class="pre">sigma2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cov_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/data_utils.html#sigma2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.data_utils.sigma2d" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">argosim.data_utils.</span></span><span class="sig-name descname"><span class="pre">sigma2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cov_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/data_utils.html#sigma2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.data_utils.sigma2d" title="Link to this definition">#</a></dt>
 <dd><p>Sigma 2D.</p>
 <p>Function to generate a random 2D covariance matrix.</p>
 <dl class="field-list simple">
@@ -427,6 +434,7 @@ The sum of all the sources should be equal to 1 to have a normalized image.</p><
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>min_var</strong> (<em>float</em>) – The minimum variance of both gaussian components.</p></li>
 <li><p><strong>cov_lim</strong> (<em>float</em>) – The limit of the covariance between gaussian components.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Optional seed to set.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
