@@ -10,6 +10,7 @@ perform aperture synthesis, obtain uv-coverage and get observations from sky mod
 
 import numpy as np
 import numpy.random as rnd
+
 from argosim.rand_utils import local_seed
 
 ########################################
@@ -39,7 +40,6 @@ def random_antenna_pos(E_lim=1000.0, N_lim=1000.0, U_lim=0.0, seed=None):
     antenna_pos : np.ndarray
         The antenna position in ENU coordinates.
     """
-    
     with local_seed(seed):
         random_coords = rnd.random_sample(3)
 
@@ -140,8 +140,7 @@ def random_antenna_arr(n_antenna=3, E_lim=1000.0, N_lim=1000.0, U_lim=0.0, seed=
     antenna_arr : np.ndarray
         The antenna array positions in ENU coordinates.
     """
-
-    # Repeating the same seed will not give us random placements... 
+    # Repeating the same seed will not give us random placements...
     # So we give the outer loop the random seed, and the inner no seed.
     with local_seed(seed):
         # Make a list of 'n' antenna locations (x_i, y_i) randomly distributed.

@@ -251,7 +251,7 @@ def add_noise_uv(vis, uv_mask, sigma=0.1, seed=None):
     """
     with local_seed(seed):
         noise_sky = rnd.normal(0, sigma, vis.shape)
-        noise_uv = sky2uv(noise_sky)
+    noise_uv = sky2uv(noise_sky)
 
     return vis + compute_visibilities_grid(noise_uv, uv_mask)
 
