@@ -1,4 +1,4 @@
-""" Random utils.
+"""Random utils.
 
 A small module to hold a class for a temporary seed, 
 so as to not mess with any global seed.
@@ -12,6 +12,8 @@ import numpy as np
 
 class local_seed:
     """
+    Holds a seed for use with `numpy.random` in a local scope.
+
     Can be instantiated with no seed, in which case it will yield the default behaviour.
     Note that if `seed` is set to the same seed `numpy` was using outside this scope,
     that doesn't mean the state is the same -- if you intend to keep the same state,
@@ -26,12 +28,14 @@ class local_seed:
     """
 
     def __init__(self, seed=None):
-        """Saves the seed to be used in a local scope."""
+        """Instantiate with a set seed."""
         self.seed = seed
         self.old_state = None
 
     def __enter__(self):
         """
+        Enter local scope.
+
         Grabs `numpy.randoms`'s state only if a `seed != None` was supplied
         upon creation, and then seeds `numpy.random`.
         """
@@ -41,6 +45,8 @@ class local_seed:
 
     def __exit__(self, *_):
         """
+        Exit local scope.
+
         Reverts `numpy.random` to the outer scope's state, if a `seed != None`
         was supplied upon creation.
         """
