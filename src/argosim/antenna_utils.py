@@ -140,8 +140,6 @@ def random_antenna_arr(n_antenna=3, E_lim=1000.0, N_lim=1000.0, U_lim=0.0, seed=
     antenna_arr : np.ndarray
         The antenna array positions in ENU coordinates.
     """
-    # Repeating the same seed will not give us random placements...
-    # So we give the outer loop the random seed, and the inner no seed.
     with local_seed(seed):
         # Make a list of 'n' antenna locations (x_i, y_i) randomly distributed.
         positions = [random_antenna_pos(E_lim, N_lim, U_lim) for i in range(n_antenna)]
