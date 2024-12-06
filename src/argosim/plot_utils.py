@@ -175,12 +175,16 @@ def plot_sky_uv(sky_uv, fov_size):
 
     plt.figure(figsize=(10, 4))
     plt.subplot(121)
-    plt.imshow(np.abs(sky_uv / 1000), extent=[-max_u, max_u, -max_v, max_v])
+    plt.imshow(
+        np.abs(sky_uv / 1000), extent=[-max_u, max_u, -max_v, max_v], origin="lower"
+    )
     plt.xlabel(r"$u(k\lambda$)")
     plt.ylabel(r"$v(k\lambda$)")
     plt.title("Amplitude")
     plt.subplot(122)
-    plt.imshow(np.angle(sky_uv / 1000), extent=[-max_u, max_u, -max_v, max_v])
+    plt.imshow(
+        np.angle(sky_uv / 1000), extent=[-max_u, max_u, -max_v, max_v], origin="lower"
+    )
     plt.xlabel(r"$u(k\lambda$)")
     plt.ylabel(r"$v(k\lambda$)")
     plt.title("Phase")
