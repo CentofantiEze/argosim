@@ -146,7 +146,7 @@ def plot_sky(image, fov_size=(1.0, 1.0), ax=None, fig=None, title="Sky"):
         fig, ax = plt.subplots(1, 1)
     im = ax.imshow(
         image,
-        extent=[-fov_size[0] / 2, fov_size[0] / 2, -fov_size[1] / 2, fov_size[1] / 2],
+        extent=[-fov_size[0] / 2, fov_size[0] / 2, -fov_size[1] / 2, fov_size[1] / 2], origin="lower"
     )
     fig.colorbar(im, ax=ax)
     ax.set_xlabel("x [deg]")
