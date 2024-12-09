@@ -147,6 +147,7 @@ def plot_sky(image, fov_size=(1.0, 1.0), ax=None, fig=None, title="Sky"):
     im = ax.imshow(
         image,
         extent=[-fov_size[0] / 2, fov_size[0] / 2, -fov_size[1] / 2, fov_size[1] / 2],
+        origin="lower",
     )
     fig.colorbar(im, ax=ax)
     ax.set_xlabel("x [deg]")
@@ -191,23 +192,23 @@ def plot_sky_uv(sky_uv, fov_size):
     plt.show()
 
 
-def plot_sampled_sky(sky_uv):
-    """Plot sampled sky.
+# def plot_sampled_sky(sky_uv):
+#     """Plot sampled sky.
 
-    Function to plot the sky model samples in uv-space according to the uv-coverage.
+#     Function to plot the sky model samples in uv-space according to the uv-coverage.
 
-    Parameters
-    ----------
-    sky_uv : np.ndarray
-        The sampled sky model in uv-space.
+#     Parameters
+#     ----------
+#     sky_uv : np.ndarray
+#         The sampled sky model in uv-space.
 
-    Returns
-    -------
-    None
-    """
-    plt.imshow(np.abs(sky_uv) + 1e-3, norm=matplotlib.colors.LogNorm())
-    plt.colorbar()
-    plt.show()
+#     Returns
+#     -------
+#     None
+#     """
+#     plt.imshow(np.abs(sky_uv) + 1e-3, norm=matplotlib.colors.LogNorm())
+#     plt.colorbar()
+#     plt.show()
 
 
 def plot_uv_hist(baselines, bins=20, output_folder=None):
