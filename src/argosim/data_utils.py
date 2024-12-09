@@ -12,7 +12,14 @@ import numpy as np
 from argosim.rand_utils import local_seed
 
 
-def gauss_source(nx=512, ny=512, mu=np.array([0, 0]), sigma=np.eye(2), fwhm_pix=64):
+def gauss_source(
+    nx=512,
+    ny=512,
+    fov=(10.0, 10.0),
+    mu=np.array([0, 0]),
+    sigma=np.eye(2),
+    fwhm_deg=0.125,
+):
     """Gauss source.
 
     Function to generate a 2D Gaussian source.
@@ -23,12 +30,14 @@ def gauss_source(nx=512, ny=512, mu=np.array([0, 0]), sigma=np.eye(2), fwhm_pix=
         The output image first dimension.
     ny : int
         The output image second dimension.
+    fov: tuple
+        The Image size in degrees.
     mu : np.ndarray
         The mean of the Gaussian source in the [-1,1]x[-1,1] range.
     sigma : np.ndarray
         The covariance matrix of the Gaussian source.
-    fwhm_pix : float
-        The FWHM of the Gaussian source in pixels.
+    fwhm_deg : float
+        The FWHM of the Gaussian source in degrees.
 
     Returns
     -------
@@ -40,12 +49,17 @@ def gauss_source(nx=512, ny=512, mu=np.array([0, 0]), sigma=np.eye(2), fwhm_pix=
         np.linspace(-fwhm / 2, fwhm / 2, nx), np.linspace(-fwhm / 2, fwhm / 2, ny)
     )
 
-    sigma = sigma / (nx * ny) * fwhm_pix**2 / np.sqrt(np.linalg.det(sigma))
+    scale = np.array([[fwhm_deg / fov[0], 0.0], [0.0, fwhm_deg / fov[1]]]) ** 2
+    sigma = sigma.dot(scale) / np.sqrt(np.linalg.det(sigma))
 
-    X_unroll = np.array([x.reshape(-1) - mu[0], y.reshape(-1) - mu[1]])
+    X_unroll = np.array(
+        [x.reshape(-1) - mu[0] * fwhm / 2, y.reshape(-1) - mu[1] * fwhm / 2]
+    )
     sigminv = np.linalg.inv(sigma)
     sigminv.dot(X_unroll).shape
-    Q = np.sum(np.multiply(X_unroll, sigminv.dot(X_unroll)), axis=0).reshape(nx, ny)
+
+    # Regarding the reshape: in np cartesian coordinates, vertical goes first.
+    Q = np.sum(np.multiply(X_unroll, sigminv.dot(X_unroll)), axis=0).reshape(ny, nx)
     return np.exp(-Q / 2)  # /(np.sqrt(2*np.pi*np.abs(np.linalg.det(sigma))))
 
 
@@ -97,7 +111,7 @@ def mu2d(seed=None):
     return mu
 
 
-def random_source(shape, pix_size, seed=None):
+def random_source(shape, fov, deg_size, seed=None):
     """Random source.
 
     Function to generate 2D Gaussian source with random mean and covariance.
@@ -106,8 +120,10 @@ def random_source(shape, pix_size, seed=None):
     ----------
     shape : tuple
         The output image shape.
-    pix_size : float
-        The size in pixels of the Gaussian source.
+    fov: tuple
+        The Image size in degrees.
+    deg_size : float
+        The size in degrees of the Gaussian source.
     seed : int
         Optional seed to set
 
@@ -119,10 +135,10 @@ def random_source(shape, pix_size, seed=None):
     with local_seed(seed):
         mu = mu2d()
         sigma = sigma2d()
-    return gauss_source(shape[0], shape[1], mu, sigma, pix_size)
+    return gauss_source(shape[0], shape[1], fov, mu, sigma, deg_size)
 
 
-def n_source_sky(shape_px, pix_size_list, source_intensity_list, seed=None):
+def n_source_sky(shape_px, fov, deg_size_list, source_intensity_list, seed=None):
     """N source sky.
 
     Function to generate a sky image with multiple Gaussian sources at random positions.
@@ -131,8 +147,10 @@ def n_source_sky(shape_px, pix_size_list, source_intensity_list, seed=None):
     ----------
     shape_px : tuple
         The image size in pixels (Nx, Ny).
-    pix_size_list : list
-        The size in pixels of the Gaussian sources.
+    fov: tuple
+        The Image size in degrees.
+    deg_size_list : list
+        The size in degrees of the Gaussian sources.
     source_intensity_list : list
         The intensity of each Gaussian source in the final image.
         The sum of all the sources should be equal to 1 to have a normalized image.
@@ -146,7 +164,7 @@ def n_source_sky(shape_px, pix_size_list, source_intensity_list, seed=None):
     """
     with local_seed(seed):
         source_list = [
-            random_source((shape_px[0], shape_px[1]), pix_size) * intensity
-            for pix_size, intensity in zip(pix_size_list, source_intensity_list)
+            random_source((shape_px[0], shape_px[1]), fov, size) * intensity
+            for size, intensity in zip(deg_size_list, source_intensity_list)
         ]
     return sum(source_list)
