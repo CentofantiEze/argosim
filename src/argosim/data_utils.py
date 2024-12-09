@@ -42,7 +42,7 @@ def gauss_source(nx=512, ny=512, mu=np.array([0, 0]), sigma=np.eye(2), fwhm_pix=
 
     sigma = sigma / (nx * ny) * fwhm_pix**2 / np.sqrt(np.linalg.det(sigma))
 
-    X_unroll = np.array([x.reshape(-1) - mu[0], y.reshape(-1) - mu[1]])
+    X_unroll = np.array([x.reshape(-1) - mu[0]*fwhm/2, y.reshape(-1) - mu[1]/fwhm/2])
     sigminv = np.linalg.inv(sigma)
     sigminv.dot(X_unroll).shape
     Q = np.sum(np.multiply(X_unroll, sigminv.dot(X_unroll)), axis=0).reshape(ny, nx)
