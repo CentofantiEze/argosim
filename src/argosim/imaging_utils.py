@@ -12,7 +12,6 @@ import numpy.random as rnd
 
 from argosim.rand_utils import local_seed
 
-
 # from PIL import Image
 
 ########################################
