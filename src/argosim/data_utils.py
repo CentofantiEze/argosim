@@ -56,8 +56,6 @@ def gauss_source(
         [x.reshape(-1) - mu[0] * fwhm / 2, y.reshape(-1) - mu[1] * fwhm / 2]
     )
     sigminv = np.linalg.inv(sigma)
-    sigminv.dot(X_unroll).shape
-
     # Regarding the reshape: in np cartesian coordinates, vertical goes first.
     Q = np.sum(np.multiply(X_unroll, sigminv.dot(X_unroll)), axis=0).reshape(ny, nx)
     return np.exp(-Q / 2)  # /(np.sqrt(2*np.pi*np.abs(np.linalg.det(sigma))))
