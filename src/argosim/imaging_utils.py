@@ -10,6 +10,8 @@ This module contains functions to perform radio interferometric imaging.
 import numpy as np
 import numpy.random as rnd
 
+from argosim.rand_utils import local_seed
+
 # from PIL import Image
 
 ########################################
