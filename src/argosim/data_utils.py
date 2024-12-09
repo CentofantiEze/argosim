@@ -124,7 +124,7 @@ def random_source(shape, pix_size, seed=None):
     return gauss_source(shape[0], shape[1], mu, sigma, pix_size)
 
 
-def n_source_sky(shape_px, pix_size_list, source_intensity_list, seed=None):
+def n_source_sky(shape_px, fov, deg_size_list, source_intensity_list, seed=None):
     """N source sky.
 
     Function to generate a sky image with multiple Gaussian sources at random positions.
@@ -133,8 +133,11 @@ def n_source_sky(shape_px, pix_size_list, source_intensity_list, seed=None):
     ----------
     shape_px : tuple
         The image size in pixels (Nx, Ny).
-    pix_size_list : list
-        The size in pixels of the Gaussian sources.
+    fov: float
+        the Image size in degrees. Is used with the first dimension of shape to
+        calculate the source sizes.
+    deg_size_list : list
+        The size in degrees of the Gaussian sources.
     source_intensity_list : list
         The intensity of each Gaussian source in the final image.
         The sum of all the sources should be equal to 1 to have a normalized image.
@@ -146,6 +149,8 @@ def n_source_sky(shape_px, pix_size_list, source_intensity_list, seed=None):
     sky : np.ndarray
         Image of size (nx,ny) containing the sky model.
     """
+    pix_per_deg = shape_px[0] / fov
+    pix_size_list = [deg_size * pix_per_deg for deg_size in deg_size_list]
     with local_seed(seed):
         source_list = [
             random_source((shape_px[0], shape_px[1]), pix_size) * intensity
