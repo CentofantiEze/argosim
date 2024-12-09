@@ -404,7 +404,7 @@
 
 <div class="viewcode-block" id="n_source_sky">
 <a class="viewcode-back" href="../../argosim.data_utils.html#argosim.data_utils.n_source_sky">[docs]</a>
-<span class="k">def</span> <span class="nf">n_source_sky</span><span class="p">(</span><span class="n">shape_px</span><span class="p">,</span> <span class="n">pix_size_list</span><span class="p">,</span> <span class="n">source_intensity_list</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">n_source_sky</span><span class="p">(</span><span class="n">shape_px</span><span class="p">,</span> <span class="n">fov</span><span class="p">,</span> <span class="n">deg_size_list</span><span class="p">,</span> <span class="n">source_intensity_list</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;N source sky.</span>
 
 <span class="sd">    Function to generate a sky image with multiple Gaussian sources at random positions.</span>
@@ -413,8 +413,11 @@
 <span class="sd">    ----------</span>
 <span class="sd">    shape_px : tuple</span>
 <span class="sd">        The image size in pixels (Nx, Ny).</span>
-<span class="sd">    pix_size_list : list</span>
-<span class="sd">        The size in pixels of the Gaussian sources.</span>
+<span class="sd">    fov: float</span>
+<span class="sd">        the Image size in degrees. Is used with the first dimension of shape to</span>
+<span class="sd">        calculate the source sizes.</span>
+<span class="sd">    deg_size_list : list</span>
+<span class="sd">        The size in degrees of the Gaussian sources.</span>
 <span class="sd">    source_intensity_list : list</span>
 <span class="sd">        The intensity of each Gaussian source in the final image.</span>
 <span class="sd">        The sum of all the sources should be equal to 1 to have a normalized image.</span>
@@ -426,6 +429,8 @@
 <span class="sd">    sky : np.ndarray</span>
 <span class="sd">        Image of size (nx,ny) containing the sky model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pix_per_deg</span> <span class="o">=</span> <span class="n">shape_px</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">fov</span>
+    <span class="n">pix_size_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">deg_size</span> <span class="o">*</span> <span class="n">pix_per_deg</span> <span class="k">for</span> <span class="n">deg_size</span> <span class="ow">in</span> <span class="n">deg_size_list</span><span class="p">]</span>
     <span class="k">with</span> <span class="n">local_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
         <span class="n">source_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">random_source</span><span class="p">((</span><span class="n">shape_px</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape_px</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">pix_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">intensity</span>
