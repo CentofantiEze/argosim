@@ -40,6 +40,22 @@ class CosCubeBeam:
     """
 
     def __init__(self, c=0.2, f=1.0, n_pix=100, fov_deg=1.0):
+        """Initialize the cosine cubed beam.
+
+        Initialize the cosine cubed beam with the given parameters and check if the desired FOV is in agreement with the beam size.
+
+        Parameters
+        ----------
+        c : float
+            The multiplicative constant of the cosine argument.
+        f : float
+            The frequency in GHz at which the beam is evaluated.
+        n_pix : int
+            The number of pixels of the simulated field of view.
+        fov_deg : float
+            The simulated field of view in degrees.
+
+        """
         self.c = c
         self.f = f
         self.grid_size = n_pix
@@ -91,14 +107,38 @@ class CosCubeBeam:
             )
 
     def set_c(self, c):
+        """Set c.
+
+        Parameters
+        ----------
+        c : float
+            The multiplicative constant of the cosine argument.
+
+        """
         self.c = c
         self.check_fov()
 
     def set_f(self, f):
+        """Set f.
+
+        Parameters
+        ----------
+        f : float
+            The frequency in GHz at which the beam is evaluated.
+
+        """
         self.f = f
         self.check_fov()
 
     def set_fov(self, fov_deg):
+        """Set FOV.
+
+        Parameters
+        ----------
+        fov_deg : float
+            The simulated field of view in degrees.
+
+        """
         self.fov_deg = fov_deg
         self.check_fov()
 
@@ -210,6 +250,16 @@ class CosCubeBeam:
         return np.pi * r_fov**2
 
     def plot_beam_1d(self, freqs):
+        """Plot beam 1D.
+
+        Function to plot the simulated beam in 1D as a function of the angle.
+
+        Parameters
+        ----------
+        freqs : list
+            The list of frequencies in GHz at which the beam is evaluated.
+
+        """
         f_old = self.f
         if freqs is None:
             freqs = [self.f]
@@ -239,6 +289,12 @@ class CosCubeBeam:
         self.set_f(f_old)
 
     def plot_beam_2d(self):
+        """Plot beam 2D.
+
+        Function to plot the simulated beam in 2D over the field of view.
+
+        """
+
         z = self.get_beam()
         fig, ax = plt.subplots()
         ax.imshow(
@@ -272,6 +328,18 @@ class CosCubeBeam:
         plt.show()
 
     def evaluate_beam_fit(self, freqs, norm_beam_list):
+        """Evaluate beam fit.
+
+        Function to evaluate the beam fit at the given frequencies and compare it with the beam measurements.
+
+        Parameters
+        ----------
+        freqs : list
+            The list of frequencies in GHz at which the beam is evaluated.
+        norm_beam_list : list
+            The list of normalized beam measurements (amplitude not dB).
+
+        """
         fig, ax = plt.subplots(1, 5, figsize=(4 * len(freqs), 4))
         cmap = plt.get_cmap("viridis")
         for i, norm_beam in enumerate(norm_beam_list):
