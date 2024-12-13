@@ -168,7 +168,6 @@ class CosCubeBeam:
             The m coordinate of the image plane.
 
         """
-
         l, m = np.meshgrid(
             np.linspace(-self.fov_deg, self.fov_deg, self.grid_size),
             np.linspace(-self.fov_deg, self.fov_deg, self.grid_size),
@@ -294,7 +293,6 @@ class CosCubeBeam:
         Function to plot the simulated beam in 2D over the field of view.
 
         """
-
         z = self.get_beam()
         fig, ax = plt.subplots()
         ax.imshow(
