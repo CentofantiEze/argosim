@@ -160,6 +160,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">argosim</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../argosim.html">argosim package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.antenna_utils.html">argosim.antenna_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../argosim.beam_utils.html">argosim.beam_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.clean.html">argosim.clean module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.data_utils.html">argosim.data_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.imaging_utils.html">argosim.imaging_utils module</a></li>
@@ -539,62 +540,79 @@
 
 
 
-<span class="c1"># def compute_visibilities(sky_uv, uv_samples_indices):</span>
-<span class="c1">#     &quot;&quot;&quot;Compute visibilities.</span>
+<div class="viewcode-block" id="simulate_dirty_observation">
+<a class="viewcode-back" href="../../argosim.imaging_utils.html#argosim.imaging_utils.simulate_dirty_observation">[docs]</a>
+<span class="k">def</span> <span class="nf">simulate_dirty_observation</span><span class="p">(</span>
+    <span class="n">sky</span><span class="p">,</span> <span class="n">track</span><span class="p">,</span> <span class="n">fov_size</span><span class="p">,</span> <span class="n">multi_band</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">freqs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate dirty observation.</span>
 
-<span class="c1">#     Function to compute the visibilities from the fourier sky and the uv samples.</span>
+<span class="sd">    Function to simulate a radio observation of the sky model from the track uv-samples.</span>
 
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     sky_uv : np.ndarray</span>
-<span class="c1">#         The sky model in Fourier/uv domain.</span>
-<span class="c1">#     uv_samples_indices : np.ndarray</span>
-<span class="c1">#         The indices of the uv samples in pixel coordinates.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sky : np.ndarray</span>
+<span class="sd">        The sky model image.</span>
+<span class="sd">    track : np.ndarray</span>
+<span class="sd">        The uv sampling points.</span>
+<span class="sd">    fov_size : float</span>
+<span class="sd">        The field of view size in degrees.</span>
+<span class="sd">    multi_band : bool</span>
+<span class="sd">        If True, simulate a multi-band observation.</span>
+<span class="sd">    freqs : list</span>
+<span class="sd">        The frequency list for the multi-band simulation.</span>
+<span class="sd">    beam : Beam</span>
+<span class="sd">        The beam object to apply to the sky, only used in multi-band simulations.</span>
+<span class="sd">    sigma : float</span>
+<span class="sd">        The standard deviation of the noise.</span>
 
-<span class="c1">#     Returns</span>
-<span class="c1">#     -------</span>
-<span class="c1">#     visibilities : np.ndarray</span>
-<span class="c1">#         List of visibilities.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     return np.array([sky_uv[int(v), int(u)] for u,v in uv_samples_indices])</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    obs : np.ndarray</span>
+<span class="sd">        The dirty observation(s).</span>
+<span class="sd">    dirty_beam : np.ndarray</span>
+<span class="sd">        The dirty beam(s).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">multi_band</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">freqs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Frequency list is required for multiband simulation&quot;</span>
+        <span class="n">obs_multiband</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">beam_multiband</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Iterate over the frequency bands</span>
+        <span class="k">for</span> <span class="n">f_</span><span class="p">,</span> <span class="n">track_f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">track</span><span class="p">):</span>
+            <span class="c1"># Apply beam to the sky</span>
+            <span class="k">if</span> <span class="n">beam</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">beam</span><span class="o">.</span><span class="n">set_fov</span><span class="p">(</span><span class="n">fov_size</span><span class="p">)</span>
+                <span class="n">beam</span><span class="o">.</span><span class="n">set_f</span><span class="p">(</span><span class="n">f_</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">)</span>
+                <span class="n">beam_amplitude</span> <span class="o">=</span> <span class="n">beam</span><span class="o">.</span><span class="n">get_beam</span><span class="p">()</span>
+                <span class="n">sky_obs</span> <span class="o">=</span> <span class="n">sky</span> <span class="o">*</span> <span class="n">beam_amplitude</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sky_obs</span> <span class="o">=</span> <span class="n">sky</span>
+            <span class="c1"># Transform to uv domain</span>
+            <span class="n">sky_uv</span> <span class="o">=</span> <span class="n">sky2uv</span><span class="p">(</span><span class="n">sky_obs</span><span class="p">)</span>
+            <span class="c1"># Compute visibilities</span>
+            <span class="n">uv_mask</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grid_uv_samples</span><span class="p">(</span><span class="n">track_f</span><span class="p">,</span> <span class="n">sky_uv</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="n">fov_size</span><span class="p">,</span> <span class="n">fov_size</span><span class="p">))</span>
+            <span class="n">vis_f</span> <span class="o">=</span> <span class="n">compute_visibilities_grid</span><span class="p">(</span><span class="n">sky_uv</span><span class="p">,</span> <span class="n">uv_mask</span><span class="p">)</span>
+            <span class="c1"># Add noise</span>
+            <span class="n">vis_f</span> <span class="o">=</span> <span class="n">add_noise_uv</span><span class="p">(</span><span class="n">vis_f</span><span class="p">,</span> <span class="n">uv_mask</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+            <span class="c1"># Back to image domain</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">uv2sky</span><span class="p">(</span><span class="n">vis_f</span><span class="p">)</span>
+            <span class="n">dirty_beam</span> <span class="o">=</span> <span class="n">uv2sky</span><span class="p">(</span><span class="n">uv_mask</span><span class="p">)</span>
 
-<span class="c1"># def get_obs_uv(sky_uv, mask):</span>
-<span class="c1">#     &quot;&quot;&quot;Get obs uv.</span>
+            <span class="n">obs_multiband</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+            <span class="n">beam_multiband</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dirty_beam</span><span class="p">)</span>
 
-<span class="c1">#     Function to compute the observed uv-plane from the sky model and the uv sampling mask.</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">obs_multiband</span><span class="p">)</span>
+        <span class="n">dirty_beam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">beam_multiband</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sky_uv</span> <span class="o">=</span> <span class="n">sky2uv</span><span class="p">(</span><span class="n">sky</span><span class="p">)</span>
+        <span class="n">uv_mask</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grid_uv_samples</span><span class="p">(</span><span class="n">track</span><span class="p">,</span> <span class="n">sky_uv</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="n">fov_size</span><span class="p">,</span> <span class="n">fov_size</span><span class="p">))</span>
+        <span class="n">vis</span> <span class="o">=</span> <span class="n">compute_visibilities_grid</span><span class="p">(</span><span class="n">sky_uv</span><span class="p">,</span> <span class="n">uv_mask</span><span class="p">)</span>
+        <span class="n">vis</span> <span class="o">=</span> <span class="n">add_noise_uv</span><span class="p">(</span><span class="n">vis</span><span class="p">,</span> <span class="n">uv_mask</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">uv2sky</span><span class="p">(</span><span class="n">vis</span><span class="p">)</span>
+        <span class="n">dirty_beam</span> <span class="o">=</span> <span class="n">uv2sky</span><span class="p">(</span><span class="n">uv_mask</span><span class="p">)</span>
 
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     sky_uv : np.ndarray</span>
-<span class="c1">#         The sky model in Fourier/uv domain.</span>
-<span class="c1">#     mask : np.ndarray</span>
-<span class="c1">#         The uv sampling mask.</span>
+    <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">dirty_beam</span></div>
 
-<span class="c1">#     Returns</span>
-<span class="c1">#     -------</span>
-<span class="c1">#     obs_uv : np.ndarray</span>
-<span class="c1">#         The observed uv-plane.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     return np.fft.fftshift(sky_uv).copy()*mask</span>
-
-<span class="c1"># def get_obs_sky(obs_uv, abs=False):</span>
-<span class="c1">#     &quot;&quot;&quot;Get obs sky.</span>
-
-<span class="c1">#     Function to compute the observed sky model from the observed uv-plane.</span>
-
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     obs_uv : np.ndarray</span>
-<span class="c1">#         The sampled sky model on the uv-plane.</span>
-<span class="c1">#     abs : bool</span>
-<span class="c1">#         If True, return the absolute value of the observed sky model.</span>
-
-<span class="c1">#     Returns</span>
-<span class="c1">#     -------</span>
-<span class="c1">#     obs_sky : np.ndarray</span>
-<span class="c1">#         The observed sky model.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     return np.abs(np.fft.ifft2(np.fft.ifftshift(obs_uv))) if abs else np.fft.ifft2(np.fft.ifftshift(obs_uv))</span>
 </pre></div>
 
                 </article>

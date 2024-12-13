@@ -160,6 +160,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">argosim</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../argosim.html">argosim package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.antenna_utils.html">argosim.antenna_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../argosim.beam_utils.html">argosim.beam_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.clean.html">argosim.clean module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.data_utils.html">argosim.data_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../argosim.imaging_utils.html">argosim.imaging_utils module</a></li>
@@ -579,6 +580,66 @@
 
 
 
+<span class="c1"># def uv_track_multiband(</span>
+<span class="c1">#     b_ENU,</span>
+<span class="c1">#     lat=35.0 / 180 * np.pi,</span>
+<span class="c1">#     dec=35.0 / 180 * np.pi,</span>
+<span class="c1">#     track_time=0.0,</span>
+<span class="c1">#     t_0=0.0,</span>
+<span class="c1">#     n_times=1,</span>
+<span class="c1">#     f=1420e6,</span>
+<span class="c1">#     df=0.0,</span>
+<span class="c1">#     n_freqs=1,</span>
+<span class="c1"># ):</span>
+<span class="c1">#     &quot;&quot;&quot;Uv track multiband.</span>
+
+<span class="c1">#     Function to compute the uv sampling baselines for a given observation time and frequency range.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     b_ENU : np.ndarray</span>
+<span class="c1">#         The baselines in ENU coordinates.</span>
+<span class="c1">#     lat : float</span>
+<span class="c1">#         The latitude of the antenna array in radians.</span>
+<span class="c1">#     dec : float</span>
+<span class="c1">#         The declination of the source in radians.</span>
+<span class="c1">#     track_time : float</span>
+<span class="c1">#         The duration of the tracking in hours.</span>
+<span class="c1">#     t_0 : float</span>
+<span class="c1">#         The initial tracking time in hours.</span>
+<span class="c1">#     n_times : int</span>
+<span class="c1">#         The number of time steps.</span>
+<span class="c1">#     f : float</span>
+<span class="c1">#         The central frequency of the observation in Hz.</span>
+<span class="c1">#     df : float</span>
+<span class="c1">#         The frequency range of the observation in Hz.</span>
+<span class="c1">#     n_freqs : int</span>
+<span class="c1">#         The number of frequency samples.</span>
+
+<span class="c1">#     Returns</span>
+<span class="c1">#     -------</span>
+<span class="c1">#     track : np.ndarray</span>
+<span class="c1">#         The uv sampling baselines listed for each time step and frequency.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     # Compute the baselines in XYZ coordinates</span>
+<span class="c1">#     X, Y, Z = ENU_to_XYZ(b_ENU, lat)</span>
+<span class="c1">#     # Compute the time steps</span>
+<span class="c1">#     h = np.linspace(t_0, t_0 + track_time, n_times) * np.pi / 12</span>
+<span class="c1">#     # Compute the frequency range</span>
+<span class="c1">#     f_range = np.linspace(f - df / 2, f + df / 2, n_freqs)</span>
+
+<span class="c1">#     track = []</span>
+<span class="c1">#     for t in h:</span>
+<span class="c1">#         multi_band = []</span>
+<span class="c1">#         for f_ in f_range:</span>
+<span class="c1">#             u, v, w = XYZ_to_uvw(X, Y, Z, dec, t, f_)</span>
+<span class="c1">#             multi_band.append(np.array([u, v, w]))</span>
+<span class="c1">#         track.append(multi_band)</span>
+<span class="c1">#     track = np.array(track).swapaxes(-1, -2).reshape(-1, 3)</span>
+
+<span class="c1">#     return track</span>
+
+
 <div class="viewcode-block" id="uv_track_multiband">
 <a class="viewcode-back" href="../../argosim.antenna_utils.html#argosim.antenna_utils.uv_track_multiband">[docs]</a>
 <span class="k">def</span> <span class="nf">uv_track_multiband</span><span class="p">(</span>
@@ -591,6 +652,7 @@
     <span class="n">f</span><span class="o">=</span><span class="mf">1420e6</span><span class="p">,</span>
     <span class="n">df</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
     <span class="n">n_freqs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">multi_band</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Uv track multiband.</span>
 
@@ -616,11 +678,15 @@
 <span class="sd">        The frequency range of the observation in Hz.</span>
 <span class="sd">    n_freqs : int</span>
 <span class="sd">        The number of frequency samples.</span>
+<span class="sd">    multi_band : bool</span>
+<span class="sd">        If True separate the uv samples per frequency bands.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    track : np.ndarray</span>
 <span class="sd">        The uv sampling baselines listed for each time step and frequency.</span>
+<span class="sd">    f_range : np.ndarray</span>
+<span class="sd">        The list of frequency bands used in the simulation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Compute the baselines in XYZ coordinates</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">ENU_to_XYZ</span><span class="p">(</span><span class="n">b_ENU</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
@@ -629,16 +695,19 @@
     <span class="c1"># Compute the frequency range</span>
     <span class="n">f_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">f</span> <span class="o">-</span> <span class="n">df</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">f</span> <span class="o">+</span> <span class="n">df</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_freqs</span><span class="p">)</span>
 
-    <span class="n">track</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">h</span><span class="p">:</span>
-        <span class="n">multi_band</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">f_</span> <span class="ow">in</span> <span class="n">f_range</span><span class="p">:</span>
+    <span class="n">track_f</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">f_</span> <span class="ow">in</span> <span class="n">f_range</span><span class="p">:</span>
+        <span class="n">track_t</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">h</span><span class="p">:</span>
             <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">XYZ_to_uvw</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f_</span><span class="p">)</span>
-            <span class="n">multi_band</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">]))</span>
-        <span class="n">track</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">multi_band</span><span class="p">)</span>
-    <span class="n">track</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">track</span><span class="p">)</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">track_t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">]))</span>
+        <span class="n">track_f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">track_t</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">track</span></div>
+    <span class="k">if</span> <span class="n">multi_band</span><span class="p">:</span>
+        <span class="n">track</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">track_f</span><span class="p">)</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_freqs</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">track</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">track_f</span><span class="p">)</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">track</span><span class="p">,</span> <span class="n">f_range</span></div>
 
 
 

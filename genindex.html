@@ -160,6 +160,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="modules.html">argosim</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="argosim.html">argosim package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="argosim.antenna_utils.html">argosim.antenna_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="argosim.beam_utils.html">argosim.beam_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="argosim.clean.html">argosim.clean module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="argosim.data_utils.html">argosim.data_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="argosim.imaging_utils.html">argosim.imaging_utils module</a></li>
@@ -268,6 +269,7 @@
 
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
@@ -301,6 +303,13 @@
 
       <ul>
         <li><a href="argosim.antenna_utils.html#module-argosim.antenna_utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    argosim.beam_utils
+
+      <ul>
+        <li><a href="argosim.beam_utils.html#module-argosim.beam_utils">module</a>
 </li>
       </ul></li>
       <li>
@@ -343,18 +352,34 @@
   </ul></td>
 </tr></table>
 
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.beam_edge">beam_edge() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="argosim.antenna_utils.html#argosim.antenna_utils.circular_antenna_arr">circular_antenna_arr() (in module argosim.antenna_utils)</a>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.c">c (argosim.beam_utils.CosCubeBeam attribute)</a>
 </li>
-      <li><a href="argosim.clean.html#argosim.clean.clean_hogbom">clean_hogbom() (in module argosim.clean)</a>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.Cf">Cf() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.check_fov">check_fov() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
+      <li><a href="argosim.antenna_utils.html#argosim.antenna_utils.circular_antenna_arr">circular_antenna_arr() (in module argosim.antenna_utils)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="argosim.clean.html#argosim.clean.clean_hogbom">clean_hogbom() (in module argosim.clean)</a>
+</li>
       <li><a href="argosim.antenna_utils.html#argosim.antenna_utils.combine_antenna_arr">combine_antenna_arr() (in module argosim.antenna_utils)</a>
 </li>
       <li><a href="argosim.imaging_utils.html#argosim.imaging_utils.compute_visibilities_grid">compute_visibilities_grid() (in module argosim.imaging_utils)</a>
+</li>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam">CosCubeBeam (class in argosim.beam_utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -365,12 +390,24 @@
       <li><a href="argosim.antenna_utils.html#argosim.antenna_utils.ENU_to_XYZ">ENU_to_XYZ() (in module argosim.antenna_utils)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.evaluate_beam_fit">evaluate_beam_fit() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.f">f (argosim.beam_utils.CosCubeBeam attribute)</a>
+</li>
       <li><a href="argosim.clean.html#argosim.clean.find_peak">find_peak() (in module argosim.clean)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.fov_deg">fov_deg (argosim.beam_utils.CosCubeBeam attribute)</a>
+</li>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.fov_solid_angle">fov_solid_angle() (argosim.beam_utils.CosCubeBeam method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -380,9 +417,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="argosim.data_utils.html#argosim.data_utils.gauss_source">gauss_source() (in module argosim.data_utils)</a>
 </li>
+      <li><a href="argosim.antenna_utils.html#argosim.antenna_utils.get_baselines">get_baselines() (in module argosim.antenna_utils)</a>
+</li>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.get_beam">get_beam() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="argosim.antenna_utils.html#argosim.antenna_utils.get_baselines">get_baselines() (in module argosim.antenna_utils)</a>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.get_mesh">get_mesh() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.grid_size">grid_size (argosim.beam_utils.CosCubeBeam attribute)</a>
 </li>
       <li><a href="argosim.imaging_utils.html#argosim.imaging_utils.grid_uv_samples">grid_uv_samples() (in module argosim.imaging_utils)</a>
 </li>
@@ -411,6 +454,8 @@
         <li><a href="argosim.html#module-argosim">argosim</a>
 </li>
         <li><a href="argosim.antenna_utils.html#module-argosim.antenna_utils">argosim.antenna_utils</a>
+</li>
+        <li><a href="argosim.beam_utils.html#module-argosim.beam_utils">argosim.beam_utils</a>
 </li>
         <li><a href="argosim.clean.html#module-argosim.clean">argosim.clean</a>
 </li>
@@ -455,8 +500,12 @@
 </li>
       <li><a href="argosim.plot_utils.html#argosim.plot_utils.plot_beam">plot_beam() (in module argosim.plot_utils)</a>
 </li>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.plot_beam_1d">plot_beam_1d() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.plot_beam_2d">plot_beam_2d() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
       <li><a href="argosim.plot_utils.html#argosim.plot_utils.plot_sky">plot_sky() (in module argosim.plot_utils)</a>
 </li>
       <li><a href="argosim.plot_utils.html#argosim.plot_utils.plot_sky_uv">plot_sky_uv() (in module argosim.plot_utils)</a>
@@ -469,6 +518,8 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.r_fov">r_fov() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
       <li><a href="argosim.antenna_utils.html#argosim.antenna_utils.random_antenna_arr">random_antenna_arr() (in module argosim.antenna_utils)</a>
 </li>
   </ul></td>
@@ -485,11 +536,19 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="argosim.rand_utils.html#argosim.rand_utils.local_seed.seed">seed (argosim.rand_utils.local_seed attribute)</a>
 </li>
-      <li><a href="argosim.clean.html#argosim.clean.shift_beam">shift_beam() (in module argosim.clean)</a>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.set_c">set_c() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.set_f">set_f() (argosim.beam_utils.CosCubeBeam method)</a>
+</li>
+      <li><a href="argosim.beam_utils.html#argosim.beam_utils.CosCubeBeam.set_fov">set_fov() (argosim.beam_utils.CosCubeBeam method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="argosim.clean.html#argosim.clean.shift_beam">shift_beam() (in module argosim.clean)</a>
+</li>
       <li><a href="argosim.data_utils.html#argosim.data_utils.sigma2d">sigma2d() (in module argosim.data_utils)</a>
+</li>
+      <li><a href="argosim.imaging_utils.html#argosim.imaging_utils.simulate_dirty_observation">simulate_dirty_observation() (in module argosim.imaging_utils)</a>
 </li>
       <li><a href="argosim.imaging_utils.html#argosim.imaging_utils.sky2uv">sky2uv() (in module argosim.imaging_utils)</a>
 </li>

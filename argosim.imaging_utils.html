@@ -161,6 +161,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="modules.html">argosim</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="argosim.html">argosim package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="argosim.antenna_utils.html">argosim.antenna_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="argosim.beam_utils.html">argosim.beam_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="argosim.clean.html">argosim.clean module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="argosim.data_utils.html">argosim.data_utils module</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">argosim.imaging_utils module</a></li>
@@ -313,6 +314,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.add_noise_uv"><code class="docutils literal notranslate"><span class="pre">add_noise_uv()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.compute_visibilities_grid"><code class="docutils literal notranslate"><span class="pre">compute_visibilities_grid()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.grid_uv_samples"><code class="docutils literal notranslate"><span class="pre">grid_uv_samples()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.simulate_dirty_observation"><code class="docutils literal notranslate"><span class="pre">simulate_dirty_observation()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.sky2uv"><code class="docutils literal notranslate"><span class="pre">sky2uv()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.uv2sky"><code class="docutils literal notranslate"><span class="pre">uv2sky()</span></code></a></li>
 </ul>
@@ -406,6 +408,33 @@ Samuel Gullin &lt;<a class="reference external" href="mailto:gullin&#37;&#52;&#4
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="argosim.imaging_utils.simulate_dirty_observation">
+<span class="sig-prename descclassname"><span class="pre">argosim.imaging_utils.</span></span><span class="sig-name descname"><span class="pre">simulate_dirty_observation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sky</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fov_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multi_band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/imaging_utils.html#simulate_dirty_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.imaging_utils.simulate_dirty_observation" title="Link to this definition">#</a></dt>
+<dd><p>Simulate dirty observation.</p>
+<p>Function to simulate a radio observation of the sky model from the track uv-samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sky</strong> (<em>np.ndarray</em>) – The sky model image.</p></li>
+<li><p><strong>track</strong> (<em>np.ndarray</em>) – The uv sampling points.</p></li>
+<li><p><strong>fov_size</strong> (<em>float</em>) – The field of view size in degrees.</p></li>
+<li><p><strong>multi_band</strong> (<em>bool</em>) – If True, simulate a multi-band observation.</p></li>
+<li><p><strong>freqs</strong> (<em>list</em>) – The frequency list for the multi-band simulation.</p></li>
+<li><p><strong>beam</strong> (<em>Beam</em>) – The beam object to apply to the sky, only used in multi-band simulations.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – The standard deviation of the noise.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>obs</strong> (<em>np.ndarray</em>) – The dirty observation(s).</p></li>
+<li><p><strong>dirty_beam</strong> (<em>np.ndarray</em>) – The dirty beam(s).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="argosim.imaging_utils.sky2uv">
 <span class="sig-prename descclassname"><span class="pre">argosim.imaging_utils.</span></span><span class="sig-name descname"><span class="pre">sky2uv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sky</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/argosim/imaging_utils.html#sky2uv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#argosim.imaging_utils.sky2uv" title="Link to this definition">#</a></dt>
 <dd><p>Sky to uv plane.</p>
@@ -492,6 +521,7 @@ Samuel Gullin &lt;<a class="reference external" href="mailto:gullin&#37;&#52;&#4
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.add_noise_uv"><code class="docutils literal notranslate"><span class="pre">add_noise_uv()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.compute_visibilities_grid"><code class="docutils literal notranslate"><span class="pre">compute_visibilities_grid()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.grid_uv_samples"><code class="docutils literal notranslate"><span class="pre">grid_uv_samples()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.simulate_dirty_observation"><code class="docutils literal notranslate"><span class="pre">simulate_dirty_observation()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.sky2uv"><code class="docutils literal notranslate"><span class="pre">sky2uv()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argosim.imaging_utils.uv2sky"><code class="docutils literal notranslate"><span class="pre">uv2sky()</span></code></a></li>
 </ul>

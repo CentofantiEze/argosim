@@ -13,6 +13,7 @@ Submodules
    :maxdepth: 4
 
    argosim.antenna_utils
+   argosim.beam_utils
    argosim.clean
    argosim.data_utils
    argosim.imaging_utils
