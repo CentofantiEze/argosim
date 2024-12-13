@@ -411,9 +411,9 @@ def uv_track_multiband(
         track_f.append(track_t)
 
     if multi_band:
-        track = np.array(track_f).swapaxes(-1,-2).reshape(n_freqs,-1,3)
+        track = np.array(track_f).swapaxes(-1, -2).reshape(n_freqs, -1, 3)
     else:
-        track = np.array(track_f).swapaxes(-1,-2).reshape(-1,3)
+        track = np.array(track_f).swapaxes(-1, -2).reshape(-1, 3)
     return track, f_range
 
 

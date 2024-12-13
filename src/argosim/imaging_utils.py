@@ -258,7 +258,9 @@ def add_noise_uv(vis, uv_mask, sigma=0.1, seed=None):
     return vis + compute_visibilities_grid(noise_uv, uv_mask)
 
 
-def simulate_dirty_observation(sky, track, fov_size, multi_band=False, freqs=None, beam=None, sigma=0.2):
+def simulate_dirty_observation(
+    sky, track, fov_size, multi_band=False, freqs=None, beam=None, sigma=0.2
+):
     """Simulate dirty observation.
 
     Function to simulate a radio observation of the sky model from the track uv-samples.
@@ -288,7 +290,7 @@ def simulate_dirty_observation(sky, track, fov_size, multi_band=False, freqs=Non
         The dirty beam(s).
     """
     if multi_band:
-        assert freqs is not None, 'Frequency list is required for multiband simulation'
+        assert freqs is not None, "Frequency list is required for multiband simulation"
         obs_multiband = []
         beam_multiband = []
         # Iterate over the frequency bands
@@ -296,7 +298,7 @@ def simulate_dirty_observation(sky, track, fov_size, multi_band=False, freqs=Non
             # Apply beam to the sky
             if beam is not None:
                 beam.set_fov(fov_size)
-                beam.set_f(f_/1e9)
+                beam.set_f(f_ / 1e9)
                 beam_amplitude = beam.get_beam()
                 sky_obs = sky * beam_amplitude
             else:
@@ -304,7 +306,7 @@ def simulate_dirty_observation(sky, track, fov_size, multi_band=False, freqs=Non
             # Transform to uv domain
             sky_uv = sky2uv(sky_obs)
             # Compute visibilities
-            uv_mask, _  = grid_uv_samples(track_f, sky_uv.shape, (fov_size, fov_size))
+            uv_mask, _ = grid_uv_samples(track_f, sky_uv.shape, (fov_size, fov_size))
             vis_f = compute_visibilities_grid(sky_uv, uv_mask)
             # Add noise
             vis_f = add_noise_uv(vis_f, uv_mask, sigma)
@@ -319,7 +321,7 @@ def simulate_dirty_observation(sky, track, fov_size, multi_band=False, freqs=Non
         dirty_beam = np.array(beam_multiband)
     else:
         sky_uv = sky2uv(sky)
-        uv_mask, _  = grid_uv_samples(track, sky_uv.shape, (fov_size, fov_size))
+        uv_mask, _ = grid_uv_samples(track, sky_uv.shape, (fov_size, fov_size))
         vis = compute_visibilities_grid(sky_uv, uv_mask)
         vis = add_noise_uv(vis, uv_mask, sigma)
         obs = uv2sky(vis)
