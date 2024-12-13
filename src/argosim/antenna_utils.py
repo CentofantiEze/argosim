@@ -289,6 +289,66 @@ def XYZ_to_uvw(X, Y, Z, dec=30.0 / 180 * np.pi, ha=0.0, f=1420e6):
     return u, v, w
 
 
+# def uv_track_multiband(
+#     b_ENU,
+#     lat=35.0 / 180 * np.pi,
+#     dec=35.0 / 180 * np.pi,
+#     track_time=0.0,
+#     t_0=0.0,
+#     n_times=1,
+#     f=1420e6,
+#     df=0.0,
+#     n_freqs=1,
+# ):
+#     """Uv track multiband.
+
+#     Function to compute the uv sampling baselines for a given observation time and frequency range.
+
+#     Parameters
+#     ----------
+#     b_ENU : np.ndarray
+#         The baselines in ENU coordinates.
+#     lat : float
+#         The latitude of the antenna array in radians.
+#     dec : float
+#         The declination of the source in radians.
+#     track_time : float
+#         The duration of the tracking in hours.
+#     t_0 : float
+#         The initial tracking time in hours.
+#     n_times : int
+#         The number of time steps.
+#     f : float
+#         The central frequency of the observation in Hz.
+#     df : float
+#         The frequency range of the observation in Hz.
+#     n_freqs : int
+#         The number of frequency samples.
+
+#     Returns
+#     -------
+#     track : np.ndarray
+#         The uv sampling baselines listed for each time step and frequency.
+#     """
+#     # Compute the baselines in XYZ coordinates
+#     X, Y, Z = ENU_to_XYZ(b_ENU, lat)
+#     # Compute the time steps
+#     h = np.linspace(t_0, t_0 + track_time, n_times) * np.pi / 12
+#     # Compute the frequency range
+#     f_range = np.linspace(f - df / 2, f + df / 2, n_freqs)
+
+#     track = []
+#     for t in h:
+#         multi_band = []
+#         for f_ in f_range:
+#             u, v, w = XYZ_to_uvw(X, Y, Z, dec, t, f_)
+#             multi_band.append(np.array([u, v, w]))
+#         track.append(multi_band)
+#     track = np.array(track).swapaxes(-1, -2).reshape(-1, 3)
+
+#     return track
+
+
 def uv_track_multiband(
     b_ENU,
     lat=35.0 / 180 * np.pi,
@@ -299,6 +359,7 @@ def uv_track_multiband(
     f=1420e6,
     df=0.0,
     n_freqs=1,
+    multi_band=False,
 ):
     """Uv track multiband.
 
@@ -324,11 +385,15 @@ def uv_track_multiband(
         The frequency range of the observation in Hz.
     n_freqs : int
         The number of frequency samples.
+    multi_band : bool
+        If True separate the uv samples per frequency bands.
 
     Returns
     -------
     track : np.ndarray
         The uv sampling baselines listed for each time step and frequency.
+    f_range : np.ndarray
+        The list of frequency bands used in the simulation.
     """
     # Compute the baselines in XYZ coordinates
     X, Y, Z = ENU_to_XYZ(b_ENU, lat)
@@ -337,16 +402,19 @@ def uv_track_multiband(
     # Compute the frequency range
     f_range = np.linspace(f - df / 2, f + df / 2, n_freqs)
 
-    track = []
-    for t in h:
-        multi_band = []
-        for f_ in f_range:
+    track_f = []
+    for f_ in f_range:
+        track_t = []
+        for t in h:
             u, v, w = XYZ_to_uvw(X, Y, Z, dec, t, f_)
-            multi_band.append(np.array([u, v, w]))
-        track.append(multi_band)
-    track = np.array(track).swapaxes(-1, -2).reshape(-1, 3)
+            track_t.append(np.array([u, v, w]))
+        track_f.append(track_t)
 
-    return track
+    if multi_band:
+        track = np.array(track_f).swapaxes(-1, -2).reshape(n_freqs, -1, 3)
+    else:
+        track = np.array(track_f).swapaxes(-1, -2).reshape(-1, 3)
+    return track, f_range
 
 
 def combine_antenna_arr(arr1, arr2):
