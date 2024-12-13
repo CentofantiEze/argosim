@@ -15,17 +15,6 @@ class CosCubeBeam:
 
     Class to model the primary beam of the antennas using a cosine cubed function.
 
-    Parameters
-    ----------
-    c : float
-        The multiplicative constant of the cosine argument.
-    f : float
-        The frequency in GHz at which the beam is evaluated.
-    n_pix : int
-        The number of pixels of the simulated field of view.
-    fov_deg : float
-        The simulated field of view in degrees.
-
     Attributes
     ----------
     c : float
